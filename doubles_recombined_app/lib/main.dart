@@ -9,7 +9,7 @@ import 'package:flutter/rendering.dart';
 
 void main() {
   // TODO:消す。レイアウトデバック機能
-  debugPaintSizeEnabled = true;
+  //debugPaintSizeEnabled = true;
   runApp(MyApp());
 }
 
@@ -19,6 +19,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // TODO:消す。レイアウトデバック機能
       //debugShowMaterialGrid: true,
+      // テーマ（仮）
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       // ルーティングの設定
       initialRoute: '/users', // 最初はユーザー一覧画面に遷移
       routes: {
