@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:doubles_recombined_app/view_model/common_view_model.dart';
 
 class BottomNavigationView extends StatelessWidget {
-  int _currentIndex = 0;
   
   @override
   Widget build(BuildContext context) {
+    final CommonViewModel model = Provider.of<CommonViewModel>(context);
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: model.index,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.group), // pepole
@@ -35,9 +38,10 @@ class BottomNavigationView extends StatelessWidget {
           ),
         ],
         // ボトムナビゲーションでページ遷移
-        onTap: (_currentIndex) {
-          print(_currentIndex); // TODO:消す。デバック用
-          switch (_currentIndex) {
+        onTap: (index) {
+          print(index); // TODO:消す。デバック用
+          model.setCurrentIndex(index); // ここでcurrentIndexを更新
+          switch (index) {
             case 0:
               Navigator.of(context).pushNamed("/users");
               break;
