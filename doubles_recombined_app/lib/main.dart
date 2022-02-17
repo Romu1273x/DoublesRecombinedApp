@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         // ルーティングの設定
         initialRoute: '/home',
         routes: {
-          '/home': (context) => BottomNavigationView(), 
+          '/home': (context) => CommonView(), 
         },
       ),
     );
