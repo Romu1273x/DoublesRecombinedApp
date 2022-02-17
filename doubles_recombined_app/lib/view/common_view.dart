@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/view_model/common_view_model.dart';
+import 'package:doubles_recombined_app/view/user_list_view.dart';
+import 'package:doubles_recombined_app/view/participant_list_view.dart';
+import 'package:doubles_recombined_app/view/game_view.dart';
+import 'package:doubles_recombined_app/view/configuration_view.dart';
 
 class BottomNavigationView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
     final CommonViewModel model = Provider.of<CommonViewModel>(context);
+    var _pages = <Widget>[
+      UserListView(), // ユーザ一覧
+      ParticipantListView(), // 参加者一覧
+      GameView(), // 試合
+      ConfigurationView(), // 設定
+    ];
 
     return Scaffold(
+      body: _pages[model.index], // ページ移動
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: model.index,
         items: const <BottomNavigationBarItem>[
@@ -41,20 +52,6 @@ class BottomNavigationView extends StatelessWidget {
         onTap: (index) {
           print(index); // TODO:消す。デバック用
           model.setCurrentIndex(index); // ここでcurrentIndexを更新
-          switch (index) {
-            case 0:
-              Navigator.of(context).pushNamed("/users");
-              break;
-            case 1:
-              Navigator.of(context).pushNamed("/participants");
-              break;
-            case 2:
-              Navigator.of(context).pushNamed("/games");
-              break;
-            case 3:
-              Navigator.of(context).pushNamed("/configuration");
-              break;
-          }
         }
       )
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:doubles_recombined_app/view/common_view.dart';
 
 class GameView extends StatelessWidget {
   @override
@@ -11,7 +10,6 @@ class GameView extends StatelessWidget {
       body: Center(
         child: Text('試合'),
       ),
-      bottomNavigationBar: BottomNavigationView(),
     );
   }
 }
