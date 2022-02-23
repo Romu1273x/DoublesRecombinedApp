@@ -24,26 +24,26 @@ class CommonView extends StatelessWidget {
         currentIndex: model.index,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.group), // pepole
-            activeIcon: Icon(Icons.groups),
+            icon: Icon(Icons.groups), // pepole
+            activeIcon: Icon(Icons.groups_outlined),
             label: 'メンバー',
             backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_agenda), // emoji_emotions, view
+            icon: Icon(Icons.emoji_emotions), // view
             activeIcon: Icon(Icons.emoji_emotions_outlined),
             label: '参加者',
             backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sports_tennis), // flag, reduce_capacity, repeat, sports
-            activeIcon: Icon(Icons.sports_tennis_outlined),
+            icon: Icon(Icons.flag), // sports_tennis, reduce_capacity, repeat, sports
+            activeIcon: Icon(Icons.flag_outlined),
             label: '試合',
             backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            activeIcon: Icon(Icons.settings_accessibility),
+            activeIcon: Icon(Icons.settings_outlined),
             label: '設定',
             backgroundColor: Colors.blue,
           ),
