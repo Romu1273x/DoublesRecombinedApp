@@ -11,22 +11,43 @@ class ParticipantListView extends StatelessWidget {
       appBar: AppBar(
         title: Text('参加者')
       ),
-      body: ListView.builder(
-        itemCount: userlist.length,
-        itemBuilder: (BuildContext context, int index) {
+      body: GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 2.5,
+        children: List.generate(userlist.length, (index) {
           return Card(
             color: Colors.cyan[50],
-            child: ListTile(
-              title: Text(userlist[index].name),
-              subtitle: Text(userlist[index].name_kana),
-              trailing: Icon(Icons.more_vert),
-              leading: Icon(Icons.person, size:40, color: Colors.pink),
-              onTap: () {
-                // クリック時の動作を記述する
-              },
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Icon(Icons.person, color: Colors.pink, size: 30),
+                ),
+                Container(
+                  width: 120,
+                  padding: const EdgeInsets.all(15.0),
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(userlist[index].name_kana, style: TextStyle(fontSize: 8)),
+                      ),
+                      Container(
+                        child: Text(userlist[index].name, style: TextStyle(fontSize: 15)),
+                      ),                   
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: Icon(Icons.more_vert),
+                ),
+              ],
             ),
           );
-        },
+        }),
       ),
     );
   }
