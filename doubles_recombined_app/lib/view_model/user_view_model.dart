@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 
 class UserViewModel extends ChangeNotifier {
-  final List<User> _users = [];
+  late List<User> _users = [];
+
+  UserViewModel() {
+    _init();
+  }
 
   List<User> get users => _users;
+
+  void _init() async {
+    _users = await User.getUsers();
+    notifyListeners();
+  }
 
   void syncDb() async {
     User.getUsers().then(
