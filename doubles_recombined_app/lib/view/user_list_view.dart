@@ -25,6 +25,7 @@ class UserListView extends StatelessWidget {
               leading: Icon(Icons.person, size:40, color: Colors.pink),
               onTap: () {
                 // クリック時の動作を記述する
+                userModel.delete(userModel.users[index].id!);
               },
             ),
           );
