@@ -34,12 +34,122 @@ class UserListView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          // TODO:削除。テストデータ
-          final User user = User(name: '山田太郎', name_kana: 'やまだたろう', sex: 2, participant: 0);
-          // ユーザを追加する処理
-          userModel.add(user);
+          // ユーザー追加ダイアログを表示
+          InputDialog(context);
         }
       ),
+    );
+  }
+
+  Future<void> InputDialog(BuildContext context) async { // 非同期処理
+    UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
+    String _gValue = '未選択';
+    bool _participantFlg = false;
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Consumer<UserViewModel>(
+          builder: (context, userModel, _) {
+            return AlertDialog(
+              title: Text('新規登録'),
+              content: Container(
+                height: 300,
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: '名前',
+                        hintText: '(例)山田太郎',
+                      ),
+                      onChanged: (value){
+                        userModel.onNameChange(value);
+                      },
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'なまえ',
+                        hintText: '(例)やまだたろう',
+                      ),
+                      onChanged: (value){
+                        userModel.onNameKanaChange(value);
+                      },
+                    ),
+                    // 性別はラジオボタン
+                    Container(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('性別'),
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                activeColor: Colors.blueAccent,
+                                value: '男性',
+                                groupValue: _gValue,
+                                onChanged: (value){
+                                  _gValue = '男性';
+                                  userModel.onSexChange(1);
+                                },
+                              ),
+                              Text('男性'),
+                              Radio(
+                                activeColor: Colors.blueAccent,
+                                value: '女性',
+                                groupValue: _gValue,
+                                onChanged: (value){
+                                  _gValue = '女性';
+                                  userModel.onSexChange(2);
+                                },
+                              ),
+                              Text('女性'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // 参加はトグル
+                    SwitchListTile(
+                      title: Text('参加'),
+                      value: _participantFlg,
+                      onChanged: (value){
+                        if (value) {
+                          _participantFlg = true;
+                          userModel.onParticipantChange(1);  
+                        } else {
+                          _participantFlg = false;
+                          userModel.onParticipantChange(2);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  color: Colors.white,
+                  textColor: Colors.blue,
+                  child: Text('キャンセル'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  color: Colors.white,
+                  textColor: Colors.blue,
+                  child: Text('OK'),
+                  onPressed: () {
+                    // ユーザーをリストに追加
+                    userModel.addUserList();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          }
+        );
+      }
     );
   }
 }
