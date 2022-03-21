@@ -24,8 +24,26 @@ class UserListView extends StatelessWidget {
               trailing: Icon(Icons.more_vert),
               leading: Icon(Icons.person, size:40, color: Colors.pink),
               onTap: () {
-                // クリック時の動作を記述する
-                userModel.delete(userModel.users[index].id!);
+                // ユーザー削除ダイアログを表示
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      children: <Widget>[
+                        SimpleDialogOption(
+                          onPressed: () {
+                            // ユーザーをリストから削除
+                            userModel.delete(userModel.users[index].id!);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Center(
+                            child: Text('削除'),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           );
