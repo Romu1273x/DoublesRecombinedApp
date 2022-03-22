@@ -2,11 +2,11 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class User {
-  final int? id;
-  final String? name;
-  final String? name_kana;
-  final int? sex;
-  final int? participant;
+  int? id;
+  String? name;
+  String? name_kana;
+  int? sex;
+  int? participant;
 
   User({
     this.id,

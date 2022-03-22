@@ -48,7 +48,8 @@ class UserListView extends StatelessWidget {
               ),
               leading: Icon(Icons.person, size:40, color: Colors.pink),
               onTap: () {
-                
+                // ユーザー編集ダイアログを表示
+                EditDialog(context, userModel.users[index]);
               },
             ),
           );
@@ -61,6 +62,134 @@ class UserListView extends StatelessWidget {
           InputDialog(context);
         }
       ),
+    );
+  }
+
+  Future<void> EditDialog(BuildContext context, User user) async {
+    UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
+    String _gValue = '未選択';
+    if (user.sex == 1) {
+      _gValue = '男性';
+    } else {
+      _gValue = '女性';
+    }
+    bool _participantFlg = false;
+    if (user.participant == 0) {
+      _participantFlg = true;
+    }
+    
+    return showDialog(
+      context: context, 
+      builder: (context) {
+        return Consumer<UserViewModel>(
+          builder: (context, userModel, _) {
+            return AlertDialog(
+              title: Text('メンバー情報変更'),
+              content: Container(
+                height: 300,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      initialValue: user.name,
+                      decoration: InputDecoration(
+                        labelText: '名前',
+                        hintText: '(例)山田太郎',
+                      ),
+                      onChanged: (value){
+                        user.name = value;
+                        userModel.onNameChange(value);
+                      },
+                    ),
+                    TextFormField(
+                      initialValue: user.name_kana,
+                      decoration: InputDecoration(
+                        labelText: 'なまえ',
+                        hintText: '(例)やまだたろう',
+                      ),
+                      onChanged: (value){
+                        user.name_kana = value;
+                        userModel.onNameKanaChange(value);
+                      },
+                    ),
+                    // 性別はラジオボタン
+                    Container(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('性別'),
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                activeColor: Colors.blueAccent,
+                                value: '男性',
+                                groupValue: _gValue,
+                                onChanged: (value){
+                                  _gValue = '男性';
+                                  user.sex = 1;
+                                  userModel.onSexChange(1);
+                                },
+                              ),
+                              Text('男性'),
+                              Radio(
+                                activeColor: Colors.blueAccent,
+                                value: '女性',
+                                groupValue: _gValue,
+                                onChanged: (value){
+                                  _gValue = '女性';
+                                  user.sex = 2;
+                                  userModel.onSexChange(2);
+                                },
+                              ),
+                              Text('女性'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // 参加はトグル
+                    SwitchListTile(
+                      title: Text('参加'),
+                      value: _participantFlg,
+                      onChanged: (value){
+                        if (value) {
+                          _participantFlg = true;
+                          user.participant = 0;
+                          userModel.onParticipantChange(0);  
+                        } else {
+                          _participantFlg = false;
+                          user.participant = 1;
+                          userModel.onParticipantChange(1);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  color: Colors.white,
+                  textColor: Colors.blue,
+                  child: Text('キャンセル'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  color: Colors.white,
+                  textColor: Colors.blue,
+                  child: Text('OK'),
+                  onPressed: () {
+                    // ユーザーをリストを編集
+                    userModel.edit(user);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -139,10 +268,10 @@ class UserListView extends StatelessWidget {
                       onChanged: (value){
                         if (value) {
                           _participantFlg = true;
-                          userModel.onParticipantChange(1);  
+                          userModel.onParticipantChange(0);  
                         } else {
                           _participantFlg = false;
-                          userModel.onParticipantChange(2);
+                          userModel.onParticipantChange(1);
                         }
                       },
                     ),
