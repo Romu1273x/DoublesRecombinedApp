@@ -21,29 +21,34 @@ class UserListView extends StatelessWidget {
             child: ListTile(
               title: Text(userModel.users[index].name!),
               subtitle: Text(userModel.users[index].name_kana!),
-              trailing: Icon(Icons.more_vert),
+              trailing: IconButton(
+                onPressed: () {
+                  // ユーザー削除ダイアログを表示
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SimpleDialog(
+                        children: <Widget>[
+                          SimpleDialogOption(
+                            onPressed: () {
+                              // ユーザーをリストから削除
+                              userModel.delete(userModel.users[index].id!);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Center(
+                              child: Text('削除'),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.more_vert),
+              ),
               leading: Icon(Icons.person, size:40, color: Colors.pink),
               onTap: () {
-                // ユーザー削除ダイアログを表示
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return SimpleDialog(
-                      children: <Widget>[
-                        SimpleDialogOption(
-                          onPressed: () {
-                            // ユーザーをリストから削除
-                            userModel.delete(userModel.users[index].id!);
-                            Navigator.of(context).pop();
-                          },
-                          child: const Center(
-                            child: Text('削除'),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                
               },
             ),
           );
