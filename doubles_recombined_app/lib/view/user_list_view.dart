@@ -49,7 +49,7 @@ class UserListView extends StatelessWidget {
               leading: Icon(Icons.person, size:40, color: Colors.pink),
               onTap: () {
                 // ユーザー編集ダイアログを表示
-                EditDialog(context, userModel.users[index]);
+                InputUserDialog(context, userModel.users[index]);
               },
             ),
           );
@@ -59,56 +59,60 @@ class UserListView extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () {
           // ユーザー追加ダイアログを表示
-          InputDialog(context);
+          InputUserDialog(context, null);
         }
       ),
     );
   }
 
-  Future<void> EditDialog(BuildContext context, User user) async {
-    UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
-    String _gValue = '未選択';
-    if (user.sex == 1) {
-      _gValue = '男性';
-    } else {
-      _gValue = '女性';
-    }
-    bool _participantFlg = false;
-    if (user.participant == 0) {
-      _participantFlg = true;
-    }
+  // ユーザー情報入力ダイアログ（ユーザー追加、ユーザー編集）
+  Future<void> InputUserDialog(BuildContext context, User? user) async {
+    final UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
     
+    // ユーザー追加の場合の初期値を設定
+    String _inputStatus = 'ADD'; // 入力フォームの設定
+    String _title = '新規メンバー登録'; // タイトル
+    userModel.user = User();
+
+    // ユーザー編集の場合の初期値を設定
+    if (user != null) {
+      _inputStatus = 'EDT';
+      _title = 'メンバー情報変更';
+      userModel.user = user;
+    }
+    userModel.initUser(); // ラジオボタンとトグルの設定
+
+    // ダイアログの表示
     return showDialog(
       context: context, 
       builder: (context) {
         return Consumer<UserViewModel>(
           builder: (context, userModel, _) {
             return AlertDialog(
-              title: Text('メンバー情報変更'),
+              title: Text(_title),
+              // 入力フォーム
               content: Container(
                 height: 300,
                 child: Column(
                   children: [
                     TextFormField(
-                      initialValue: user.name,
+                      initialValue: userModel.user.name,
                       decoration: InputDecoration(
                         labelText: '名前',
                         hintText: '(例)山田太郎',
                       ),
                       onChanged: (value){
-                        user.name = value;
-                        userModel.onNameChange(value);
+                        userModel.user.name = value;
                       },
                     ),
                     TextFormField(
-                      initialValue: user.name_kana,
+                      initialValue: userModel.user.name_kana,
                       decoration: InputDecoration(
                         labelText: 'なまえ',
                         hintText: '(例)やまだたろう',
                       ),
                       onChanged: (value){
-                        user.name_kana = value;
-                        userModel.onNameKanaChange(value);
+                        userModel.user.name_kana = value;
                       },
                     ),
                     // 性別はラジオボタン
@@ -123,22 +127,20 @@ class UserListView extends StatelessWidget {
                               Radio(
                                 activeColor: Colors.blueAccent,
                                 value: '男性',
-                                groupValue: _gValue,
+                                groupValue: userModel.sexValue,
                                 onChanged: (value){
-                                  _gValue = '男性';
-                                  user.sex = 1;
-                                  userModel.onSexChange(1);
+                                  userModel.sexValue = '男性';
+                                  userModel.user.sex = 1;
                                 },
                               ),
                               Text('男性'),
                               Radio(
                                 activeColor: Colors.blueAccent,
                                 value: '女性',
-                                groupValue: _gValue,
+                                groupValue: userModel.sexValue,
                                 onChanged: (value){
-                                  _gValue = '女性';
-                                  user.sex = 2;
-                                  userModel.onSexChange(2);
+                                  userModel.sexValue = '女性';
+                                  userModel.user.sex = 2;
                                 },
                               ),
                               Text('女性'),
@@ -150,16 +152,14 @@ class UserListView extends StatelessWidget {
                     // 参加はトグル
                     SwitchListTile(
                       title: Text('参加'),
-                      value: _participantFlg,
+                      value: userModel.participantFlag,
                       onChanged: (value){
                         if (value) {
-                          _participantFlg = true;
-                          user.participant = 0;
-                          userModel.onParticipantChange(0);  
+                          userModel.participantFlag = true;
+                          userModel.user.participant = 0; 
                         } else {
-                          _participantFlg = false;
-                          user.participant = 1;
-                          userModel.onParticipantChange(1);
+                          userModel.participantFlag = false;
+                          userModel.user.participant = 1; 
                         }
                       },
                     ),
@@ -180,8 +180,13 @@ class UserListView extends StatelessWidget {
                   textColor: Colors.blue,
                   child: Text('OK'),
                   onPressed: () {
-                    // ユーザーをリストを編集
-                    userModel.edit(user);
+                    if (_inputStatus == 'ADD') {
+                      // ユーザーをリストを追加
+                      userModel.addUserList();
+                    } else {
+                      // ユーザーをリストを編集
+                      userModel.editUserList();
+                    }
                     Navigator.pop(context);
                   },
                 ),
@@ -193,115 +198,4 @@ class UserListView extends StatelessWidget {
     );
   }
 
-  Future<void> InputDialog(BuildContext context) async { // 非同期処理
-    UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
-    String _gValue = '未選択';
-    bool _participantFlg = false;
-
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return Consumer<UserViewModel>(
-          builder: (context, userModel, _) {
-            return AlertDialog(
-              title: Text('新規登録'),
-              content: Container(
-                height: 300,
-                child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: '名前',
-                        hintText: '(例)山田太郎',
-                      ),
-                      onChanged: (value){
-                        userModel.onNameChange(value);
-                      },
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'なまえ',
-                        hintText: '(例)やまだたろう',
-                      ),
-                      onChanged: (value){
-                        userModel.onNameKanaChange(value);
-                      },
-                    ),
-                    // 性別はラジオボタン
-                    Container(
-                      padding: EdgeInsets.only(top: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('性別'),
-                          Row(
-                            children: <Widget>[
-                              Radio(
-                                activeColor: Colors.blueAccent,
-                                value: '男性',
-                                groupValue: _gValue,
-                                onChanged: (value){
-                                  _gValue = '男性';
-                                  userModel.onSexChange(1);
-                                },
-                              ),
-                              Text('男性'),
-                              Radio(
-                                activeColor: Colors.blueAccent,
-                                value: '女性',
-                                groupValue: _gValue,
-                                onChanged: (value){
-                                  _gValue = '女性';
-                                  userModel.onSexChange(2);
-                                },
-                              ),
-                              Text('女性'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    // 参加はトグル
-                    SwitchListTile(
-                      title: Text('参加'),
-                      value: _participantFlg,
-                      onChanged: (value){
-                        if (value) {
-                          _participantFlg = true;
-                          userModel.onParticipantChange(0);  
-                        } else {
-                          _participantFlg = false;
-                          userModel.onParticipantChange(1);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  color: Colors.white,
-                  textColor: Colors.blue,
-                  child: Text('キャンセル'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                FlatButton(
-                  color: Colors.white,
-                  textColor: Colors.blue,
-                  child: Text('OK'),
-                  onPressed: () {
-                    // ユーザーをリストに追加
-                    userModel.addUserList();
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            );
-          }
-        );
-      }
-    );
-  }
 }

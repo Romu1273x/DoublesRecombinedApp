@@ -3,17 +3,38 @@ import 'package:doubles_recombined_app/model/user_model.dart';
 
 class UserViewModel extends ChangeNotifier {
   late List<User> _users = [];
-  late String _name;
-  late String _name_kana;
-  late int _sex;
-  late int _participant;
+  late User _user;
+  String _sexValue = '未選択';
+  bool _participantFlag = false;
 
+  // constructor
   UserViewModel() {
     _init();
   }
 
+  // getter
   List<User> get users => _users;
+  User get user => _user;
+  String get sexValue => _sexValue;
+  bool get participantFlag => _participantFlag;
 
+  // setter
+  set user(User inputUser) {
+    _user = inputUser;
+    notifyListeners();
+  }
+
+  set sexValue(String inputSexValue) {
+    _sexValue = inputSexValue;
+    notifyListeners();
+  }
+
+  set participantFlag(bool inputParticipantFlag) {
+    _participantFlag = inputParticipantFlag;
+    notifyListeners();
+  }
+
+  // 初期化処理
   void _init() async {
     _users = await User.getUsers();
     notifyListeners();
@@ -46,39 +67,36 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 名前を変更
-  void onNameChange(String name) {
-    _name = name;
-    notifyListeners();
+  // ユーザー情報入力ダイアログの初期値の設定
+  void initUser() {
+    // 新規ユーザー登録の場合
+    _sexValue = '未選択';
+    _participantFlag = false;
+
+    // ユーザー編集の場合
+    if (_user.name != null) {
+      if (_user.sex == 1) {
+        _sexValue = '男性';
+      } else {
+        _sexValue = '女性';
+      }
+
+      if (_user.participant == 0) {
+        _participantFlag = true;
+      } else {
+        _participantFlag = false;
+      }
+    }
   }
 
-  // 名前(かな)を変更
-  void onNameKanaChange(String name_kana) {
-    _name_kana = name_kana;
-    notifyListeners();
-  }
-
-  // 性別を変更
-  void onSexChange(int sex) {
-    _sex = sex;
-    notifyListeners();
-  }
-
-  // 参加を変更
-  void onParticipantChange(int participant) {
-    _participant = participant;
-    notifyListeners();
-  }
-
-  // ユーザーリストを追加
+  // ユーザーリストの追加
   void addUserList() async {
-    User _user = User(
-      name: _name,
-      name_kana:  _name_kana,
-      sex: _sex,
-      participant: _participant 
-    );
     add(_user);
+  }
+
+  // ユーザーリストの編集
+  void editUserList() async {
+    edit(_user);
   }
 
 }
