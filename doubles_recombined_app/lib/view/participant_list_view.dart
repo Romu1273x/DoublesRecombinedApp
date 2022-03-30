@@ -27,7 +27,7 @@ class ParticipantListView extends StatelessWidget {
                   child: Icon(Icons.person, color: Colors.pink, size: size.width/12),
                 ),
                 Container(
-                  width: (size.width / 3.3),
+                  width: (size.width / 4.2),
                   padding: const EdgeInsets.all(5.0),
                   alignment: Alignment.centerLeft,
                   child: Column(
@@ -45,7 +45,29 @@ class ParticipantListView extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.centerRight,
-                  child: Icon(Icons.more_vert),
+                  child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SimpleDialog(
+                            children: <Widget>[
+                              SimpleDialogOption(
+                                onPressed: () {
+                                  // TODO:参加→不参加にする
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Center(
+                                  child: Text('参加者リストから削除しますか？'),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }, 
+                    icon: Icon(Icons.more_vert),
+                  ),
                 ),
               ],
             ),
