@@ -7,6 +7,7 @@ class ParticipantListView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
     final UserViewModel userModel = Provider.of<UserViewModel>(context);
 
     return Scaffold(
@@ -15,7 +16,7 @@ class ParticipantListView extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 2,
-        childAspectRatio: 2.5,
+        childAspectRatio: 2.6,
         children: List.generate(userModel.users.length, (index) {
           return Card(
             color: Colors.cyan[50],
@@ -23,21 +24,21 @@ class ParticipantListView extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(5.0),
-                  child: Icon(Icons.person, color: Colors.pink, size: 30),
+                  child: Icon(Icons.person, color: Colors.pink, size: size.width/12),
                 ),
                 Container(
-                  width: 120,
-                  padding: const EdgeInsets.all(15.0),
+                  width: (size.width / 3.3),
+                  padding: const EdgeInsets.all(5.0),
                   alignment: Alignment.centerLeft,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        child: Text(userModel.users[index].name_kana!, style: TextStyle(fontSize: 8)),
+                        child: Text(userModel.users[index].name_kana!, style: TextStyle(fontSize: size.height/85)),
                       ),
                       Container(
-                        child: Text(userModel.users[index].name!, style: TextStyle(fontSize: 15)),
+                        child: Text(userModel.users[index].name!, style: TextStyle(fontSize: size.height/45)),
                       ),                   
                     ],
                   ),
