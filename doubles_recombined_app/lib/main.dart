@@ -3,6 +3,7 @@ import 'package:doubles_recombined_app/view/common_view.dart';
 import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/view_model/common_view_model.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
+import 'package:doubles_recombined_app/view_model/participant_view_model.dart';
 
 // TODO:消す。レイアウトデバック機能
 import 'package:flutter/rendering.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<CommonViewModel>(create: (context) => CommonViewModel()),
         ChangeNotifierProvider<UserViewModel>(create: (context) => UserViewModel()),
+        ChangeNotifierProvider<ParticipantViewModel>(create: (context) => ParticipantViewModel()),
       ],
       child: MaterialApp(
         // TODO:消す。レイアウトデバック機能

@@ -73,6 +73,24 @@ class User {
     });
   }
 
+  static Future<List<User>> getParticipantUsers() async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = 
+      await db.query(
+        'user',
+         where: 'participant = 0',
+      );
+    return List.generate(maps.length, (i) {
+      return User(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        name_kana: maps[i]['name_kana'],
+        sex: maps[i]['sex'],
+        participant: maps[i]['participant'],
+      );
+    });
+  }
+
   // データの更新
   static Future<void> updateUser(User user) async {
     final db = await database;
