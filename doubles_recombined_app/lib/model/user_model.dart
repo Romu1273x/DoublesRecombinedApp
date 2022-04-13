@@ -1,5 +1,5 @@
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:doubles_recombined_app/utility/initialize_database.dart';
 
 class User {
   int? id;
@@ -24,28 +24,6 @@ class User {
       'sex': sex,
       'participant': participant,
     };
-  }
-
-  // データベースの作成
-  static Future<Database> get database async {
-    // openDatabase(): データベースに接続
-    final Future<Database> _database = openDatabase(
-      // getDatabasesPath(): データベースファイルを保存するパス取得
-      join(await getDatabasesPath(), 'recombined_app_database.db'),
-      onCreate: (db, version) {
-        return db.execute('''
-          CREATE TABLE user (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            name_kana TEXT NOT NULL,
-            sex INTEGER NOT NULL,
-            participant INTEGER
-          )
-        ''');
-      },
-      version: 1,
-    );
-    return _database;
   }
 
   // データの作成
