@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
-import 'package:doubles_recombined_app/view_model/participant_view_model.dart';
 
 class ParticipantListView extends StatelessWidget {
   
@@ -54,7 +53,9 @@ class ParticipantListView extends StatelessWidget {
                             children: <Widget>[
                               SimpleDialogOption(
                                 onPressed: () {
-                                  // TODO:参加→不参加にする
+                                  // 参加状態から不参加にする
+                                  userProvider.participantUserList[index].participant = 1;
+                                  userProvider.updateUser(userProvider.participantUserList[index]);
                                   Navigator.of(context).pop();
                                 },
                                 child: const Center(
