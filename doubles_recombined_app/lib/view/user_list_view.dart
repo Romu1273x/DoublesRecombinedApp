@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:provider/provider.dart';
+import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
 
 class UserListView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final UserViewModel userModel = Provider.of<UserViewModel>(context);
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('メンバー')
       ),
       body: ListView.builder(
-        itemCount: userModel.users.length,
+        itemCount: userProvider.userList.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
             color: Colors.cyan[50],
             child: ListTile(
-              title: Text(userModel.users[index].name!),
-              subtitle: Text(userModel.users[index].name_kana!),
+              title: Text(userProvider.userList[index].name!),
+              subtitle: Text(userProvider.userList[index].name_kana!),
               trailing: IconButton(
                 onPressed: () {
                   // ユーザー削除ダイアログを表示
@@ -32,7 +33,7 @@ class UserListView extends StatelessWidget {
                           SimpleDialogOption(
                             onPressed: () {
                               // ユーザーをリストから削除
-                              userModel.delete(userModel.users[index].id!);
+                              userProvider.deleteUser(userProvider.userList[index].id!);
                               Navigator.of(context).pop();
                             },
                             child: const Center(
@@ -49,7 +50,7 @@ class UserListView extends StatelessWidget {
               leading: Icon(Icons.person, size:40, color: Colors.pink),
               onTap: () {
                 // ユーザー編集ダイアログを表示
-                InputUserDialog(context, userModel.users[index]);
+                InputUserDialog(context, userProvider.userList[index]);
               },
             ),
           );
@@ -67,6 +68,7 @@ class UserListView extends StatelessWidget {
 
   // ユーザー情報入力ダイアログ（ユーザー追加、ユーザー編集）
   Future<void> InputUserDialog(BuildContext context, User? user) async {
+    final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     final UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
     
     // ユーザー追加の場合の初期値を設定
@@ -182,10 +184,10 @@ class UserListView extends StatelessWidget {
                   onPressed: () {
                     if (_inputStatus == 'ADD') {
                       // ユーザーをリストを追加
-                      userModel.addUserList();
+                      userProvider.addUser(userModel.user);
                     } else {
                       // ユーザーをリストを編集
-                      userModel.editUserList();
+                      userProvider.updateUser(userModel.user);
                     }
                     Navigator.pop(context);
                   },

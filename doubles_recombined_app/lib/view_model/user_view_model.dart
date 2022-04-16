@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 
 class UserViewModel extends ChangeNotifier {
-  late List<User> _users = [];
   late User _user;
   String _sexValue = '未選択';
   bool _participantFlag = false;
 
   // constructor
   UserViewModel() {
-    _init();
-  }
+}
 
   // getter
-  List<User> get users => _users;
   User get user => _user;
   String get sexValue => _sexValue;
   bool get participantFlag => _participantFlag;
@@ -31,39 +28,6 @@ class UserViewModel extends ChangeNotifier {
 
   set participantFlag(bool inputParticipantFlag) {
     _participantFlag = inputParticipantFlag;
-    notifyListeners();
-  }
-
-  // 初期化処理
-  void _init() async {
-    _users = await User.getUsers();
-    notifyListeners();
-  }
-
-  void syncDb() async {
-    User.getUsers().then(
-      (val) => _users
-        ..clear()
-        ..addAll(val),
-    );
-    notifyListeners();
-  }
-
-  // データの追加
-  void add(User user) async {
-    await User.insertUser(user);
-    syncDb();
-  }
-
-  // データの削除
-  void delete(int id) async {
-    await User.deleteUser(id);
-    syncDb();
-  }
-
-  // データの更新
-  void edit(User user) async {
-    await User.updateUser(user);
     notifyListeners();
   }
 
@@ -87,16 +51,6 @@ class UserViewModel extends ChangeNotifier {
         _participantFlag = false;
       }
     }
-  }
-
-  // ユーザーリストの追加
-  void addUserList() async {
-    add(_user);
-  }
-
-  // ユーザーリストの編集
-  void editUserList() async {
-    edit(_user);
   }
 
 }

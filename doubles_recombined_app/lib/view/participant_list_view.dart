@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/view_model/participant_view_model.dart';
 
 class ParticipantListView extends StatelessWidget {
@@ -7,7 +8,7 @@ class ParticipantListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
-    final ParticipantViewModel participantUserModel = Provider.of<ParticipantViewModel>(context);
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -16,7 +17,7 @@ class ParticipantListView extends StatelessWidget {
       body: GridView.count(
         crossAxisCount: 2,
         childAspectRatio: 2.6,
-        children: List.generate(participantUserModel.users.length, (index) {
+        children: List.generate(userProvider.participantUserList.length, (index) {
           return Card(
             color: Colors.cyan[50],
             child: Row(
@@ -34,10 +35,10 @@ class ParticipantListView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        child: Text(participantUserModel.users[index].name_kana!, style: TextStyle(fontSize: size.height/85)),
+                        child: Text(userProvider.participantUserList[index].name_kana!, style: TextStyle(fontSize: size.height/85)),
                       ),
                       Container(
-                        child: Text(participantUserModel.users[index].name!, style: TextStyle(fontSize: size.height/45)),
+                        child: Text(userProvider.participantUserList[index].name!, style: TextStyle(fontSize: size.height/45)),
                       ),                   
                     ],
                   ),

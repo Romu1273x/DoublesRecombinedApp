@@ -1,26 +1,27 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-// DBの初期化
-Future<Database> get database async {
-  final Future<Database> _database = openDatabase(
-    join(await getDatabasesPath(), 'recombined_app_database.db'), // DBのパス
-      onCreate: _onCreate,
-      onUpgrade: _onUpgrade,
-      version: 1,
-    );
-  return _database;
-}
-
-// Future<Database> initializeDatabase() async {
-//   final database = openDatabase(
+// // DBの初期化
+// Future<Database> get database async {
+//   final Future<Database> _database = openDatabase(
 //     join(await getDatabasesPath(), 'recombined_app_database.db'), // DBのパス
-//     onCreate: _onCreate,
-//     onUpgrade: _onUpgrade,
-//     version: 1,
-//   );
-//   return database;
+//       onCreate: _onCreate,
+//       onUpgrade: _onUpgrade,
+//       version: 1,
+//     );
+//   return _database;
 // }
+
+// DBの初期化
+Future<Database> initializeDatabase() async {
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'recombined_app_database.db'), // DBのパス
+    onCreate: _onCreate,
+    onUpgrade: _onUpgrade,
+    version: 1,
+  );
+  return database;
+}
 
 // DBが存在しない場合に呼び出す
 void _onCreate(
