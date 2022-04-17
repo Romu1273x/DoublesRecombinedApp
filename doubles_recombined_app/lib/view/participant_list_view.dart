@@ -17,13 +17,18 @@ class ParticipantListView extends StatelessWidget {
         crossAxisCount: 2,
         childAspectRatio: 2.6,
         children: List.generate(userProvider.participantUserList.length, (index) {
+          // 性別によってアイコンを変更
+          Icon personIcon = Icon(Icons.person, color: Colors.blue, size: size.width/12);
+          if (userProvider.participantUserList[index].sex == 2) {
+            personIcon = Icon(Icons.person, color: Colors.pink, size: size.width/12);
+          }
           return Card(
             color: Colors.cyan[50],
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(5.0),
-                  child: Icon(Icons.person, color: Colors.pink, size: size.width/12),
+                  child: personIcon,
                 ),
                 Container(
                   width: (size.width / 4.2),

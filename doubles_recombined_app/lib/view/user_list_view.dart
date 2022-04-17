@@ -17,6 +17,11 @@ class UserListView extends StatelessWidget {
       body: ListView.builder(
         itemCount: userProvider.userList.length,
         itemBuilder: (BuildContext context, int index) {
+          // 性別によってアイコンを変更
+          Icon personIcon = Icon(Icons.person, size:40, color: Colors.blue);
+          if (userProvider.userList[index].sex == 2) {
+            personIcon = Icon(Icons.person, size:40, color: Colors.pink);
+          }
           return Card(
             color: Colors.cyan[50],
             child: ListTile(
@@ -47,7 +52,7 @@ class UserListView extends StatelessWidget {
                 },
                 icon: Icon(Icons.more_vert),
               ),
-              leading: Icon(Icons.person, size:40, color: Colors.pink),
+              leading: personIcon,
               onTap: () {
                 // ユーザー編集ダイアログを表示
                 InputUserDialog(context, userProvider.userList[index]);
