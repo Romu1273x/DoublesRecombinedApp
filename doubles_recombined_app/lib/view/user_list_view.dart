@@ -12,7 +12,16 @@ class UserListView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('メンバー')
+        title: Text('メンバー'),
+        actions: [
+          IconButton(
+            onPressed: (){
+              // ユーザー追加ダイアログを表示
+              InputUserDialog(context, null);
+            }, 
+            icon: Icon(Icons.person_add),
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: userProvider.userList.length,
@@ -60,13 +69,6 @@ class UserListView extends StatelessWidget {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          // ユーザー追加ダイアログを表示
-          InputUserDialog(context, null);
-        }
       ),
     );
   }
