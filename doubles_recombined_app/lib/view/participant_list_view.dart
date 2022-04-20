@@ -19,7 +19,7 @@ class ParticipantListView extends StatelessWidget {
         children: List.generate(userProvider.participantUserList.length, (index) {
           // 性別によってアイコンを変更
           Icon personIcon = Icon(Icons.person, color: Colors.blue, size: size.width/12);
-          if (userProvider.participantUserList[index].sex == 2) {
+          if (userProvider.participantUserList[index].gender == 2) {
             personIcon = Icon(Icons.person, color: Colors.pink, size: size.width/12);
           }
           return Card(
@@ -59,7 +59,7 @@ class ParticipantListView extends StatelessWidget {
                               SimpleDialogOption(
                                 onPressed: () {
                                   // 参加状態から不参加にする
-                                  userProvider.participantUserList[index].participant = 1;
+                                  userProvider.participantUserList[index].status = 0;
                                   userProvider.updateUser(userProvider.participantUserList[index]);
                                   Navigator.of(context).pop();
                                 },

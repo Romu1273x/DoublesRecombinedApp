@@ -39,16 +39,16 @@ class UserViewModel extends ChangeNotifier {
 
     // ユーザー編集の場合
     if (_user.name != null) {
-      if (_user.sex == 1) {
+      if (_user.gender == 1) {
         _sexValue = '男性';
       } else {
         _sexValue = '女性';
       }
 
-      if (_user.participant == 0) {
-        _participantFlag = true;
-      } else {
+      if (_user.status == null || _user.status == 0) {
         _participantFlag = false;
+      } else {
+        _participantFlag = true;
       }
     }
   }

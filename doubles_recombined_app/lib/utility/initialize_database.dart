@@ -15,7 +15,7 @@ import 'package:sqflite/sqflite.dart';
 // DBの初期化
 Future<Database> initializeDatabase() async {
   final database = openDatabase(
-    join(await getDatabasesPath(), 'recombined_app_database.db'), // DBのパス
+    join(await getDatabasesPath(), 'test03.db'), // DBのパス TODO:仮
     onCreate: _onCreate,
     onUpgrade: _onUpgrade,
     version: 1,
@@ -56,8 +56,9 @@ const migrationScripts = {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       name_kana TEXT NOT NULL,
-      sex INTEGER NOT NULL,
-      participant INTEGER'
+      gender INTEGER NOT NULL,
+      status INTEGER NOT NULL DEFAULT 0
+      )
   '''],
   // アップデートする際のメモ
   //'2': ['ALTER TABLE todo ADD COLUMN videoPath TEXT;'],

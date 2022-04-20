@@ -18,7 +18,7 @@ class UserProvider with ChangeNotifier {
   // 初期化
   Future<void> initialize() async {
     userList = await getUserList();
-    participantUserList = userList.where((User user) => user.participant == 0).toList();
+    participantUserList = userList.where((User user) => user.status != 0).toList();
   }
 
   // ユーザーリストの取得
@@ -29,8 +29,8 @@ class UserProvider with ChangeNotifier {
         id: maps[i]['id'],
         name: maps[i]['name'],
         name_kana: maps[i]['name_kana'],
-        sex: maps[i]['sex'],
-        participant: maps[i]['participant'],
+        gender: maps[i]['gender'],
+        status: maps[i]['status'],
       );
     });
   }
@@ -46,7 +46,7 @@ class UserProvider with ChangeNotifier {
 
   // 参加者リストの更新
   void syncParticipantUserList() async {
-    participantUserList = userList.where((User user) => user.participant == 0).toList();
+    participantUserList = userList.where((User user) => user.status != 0).toList();
   }
 
   // Userデータの追加

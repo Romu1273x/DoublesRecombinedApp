@@ -28,7 +28,7 @@ class UserListView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           // 性別によってアイコンを変更
           Icon personIcon = Icon(Icons.person, size:40, color: Colors.blue);
-          if (userProvider.userList[index].sex == 2) {
+          if (userProvider.userList[index].gender == 2) {
             personIcon = Icon(Icons.person, size:40, color: Colors.pink);
           }
           return Card(
@@ -81,7 +81,7 @@ class UserListView extends StatelessWidget {
     // ユーザー追加の場合の初期値を設定
     String _inputStatus = 'ADD'; // 入力フォームの設定
     String _title = '新規メンバー登録'; // タイトル
-    userModel.user = User();
+    userModel.user = User(status: 0);
 
     // ユーザー編集の場合の初期値を設定
     if (user != null) {
@@ -139,7 +139,7 @@ class UserListView extends StatelessWidget {
                                 groupValue: userModel.sexValue,
                                 onChanged: (value){
                                   userModel.sexValue = '男性';
-                                  userModel.user.sex = 1;
+                                  userModel.user.gender = 1;
                                 },
                               ),
                               Text('男性'),
@@ -149,7 +149,7 @@ class UserListView extends StatelessWidget {
                                 groupValue: userModel.sexValue,
                                 onChanged: (value){
                                   userModel.sexValue = '女性';
-                                  userModel.user.sex = 2;
+                                  userModel.user.gender = 2;
                                 },
                               ),
                               Text('女性'),
@@ -165,10 +165,10 @@ class UserListView extends StatelessWidget {
                       onChanged: (value){
                         if (value) {
                           userModel.participantFlag = true;
-                          userModel.user.participant = 0; 
+                          userModel.user.status = 1; 
                         } else {
                           userModel.participantFlag = false;
-                          userModel.user.participant = 1; 
+                          userModel.user.status = 0; 
                         }
                       },
                     ),

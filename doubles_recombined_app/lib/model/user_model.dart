@@ -2,15 +2,15 @@ class User {
   int? id;
   String? name;
   String? name_kana;
-  int? sex;
-  int? participant;
+  int? gender; // 1:男, 2:女
+  int? status; // 0:不参加, 1:参加, 2:試合中
 
   User({
     this.id,
     this.name,
     this.name_kana,
-    this.sex,
-    this.participant,
+    this.gender,
+    this.status,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,8 +18,8 @@ class User {
       'id': id,
       'name': name,
       'name_kana': name_kana,
-      'sex': sex,
-      'participant': participant,
+      'gender': gender,
+      'status': status,
     };
   }
 }
