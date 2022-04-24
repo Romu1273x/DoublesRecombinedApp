@@ -6,11 +6,15 @@ class UserProvider with ChangeNotifier {
   final Database database;
   late List<User> userList;
   late List<User> participantUserList;
+  late List<User> gamePlayUserList; // 試合中のユーザーリスト
+  late List<User> gameStandUserList; // 休憩中のユーザーリスト
 
   UserProvider({
     required this.database,
     this.userList = const [],
     this.participantUserList = const [],
+    this.gamePlayUserList = const [],
+    this.gameStandUserList = const [],
   }) {
     initialize();
   }
@@ -45,8 +49,26 @@ class UserProvider with ChangeNotifier {
   // }
 
   // 参加者リストの更新
-  void syncParticipantUserList() async {
+  void syncParticipantUserList() {
     participantUserList = userList.where((User user) => user.status != 0).toList();
+  }
+
+  // 試合中,休憩中のユーザーリストを取得
+  void getGameUserList(int useCourts) {
+    int gamePlayers = 4 * useCourts;
+    gamePlayUserList = [];
+    gameStandUserList = [];
+
+    participantUserList.shuffle();
+    if (participantUserList.length >= gamePlayers) {
+      for (int i = 0; i < gamePlayers; i++) {
+        gamePlayUserList.add(participantUserList[i]);
+      }
+      for (int i = gamePlayers; i < participantUserList.length; i++) {
+        gameStandUserList.add(participantUserList[i]);
+      }
+    }
+    notifyListeners();
   }
 
   // Userデータの追加
