@@ -39,15 +39,6 @@ class UserProvider with ChangeNotifier {
     });
   }
 
-  // void syncDb() async {
-  //   getUserList().then(
-  //     (val) => userList
-  //       ..clear()
-  //       ..addAll(val),
-  //   );
-  //   notifyListeners();
-  // }
-
   // 参加者リストの更新
   void syncParticipantUserList() {
     participantUserList = userList.where((User user) => user.status != 0).toList();
