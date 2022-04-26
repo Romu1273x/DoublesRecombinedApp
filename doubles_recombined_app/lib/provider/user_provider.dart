@@ -27,7 +27,7 @@ class UserProvider with ChangeNotifier {
 
   // ユーザーリストの取得
   Future<List<User>> getUserList() async {
-    final List<Map<String, dynamic>> maps = await database.query('user');
+    final List<Map<String, dynamic>> maps = await database.query('users');
     return List.generate(maps.length, (i) {
       return User(
         id: maps[i]['id'],
@@ -70,7 +70,7 @@ class UserProvider with ChangeNotifier {
 
     // データベースに追加
     await database.insert(
-      'user',
+      'users',
       user.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -86,7 +86,7 @@ class UserProvider with ChangeNotifier {
 
     // データベースを更新
     await database.update(
-      'user',
+      'users',
       newUser.toMap(),
       where: 'id = ?',
       whereArgs: [newUser.id],
@@ -103,7 +103,7 @@ class UserProvider with ChangeNotifier {
 
     // データベースの削除
     await database.delete(
-      'user',
+      'users',
       where: 'id = ?',
       whereArgs: [userId],
     );
