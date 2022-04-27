@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/utility/initialize_database.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
+import 'package:doubles_recombined_app/provider/setting_provider.dart';
 import 'package:doubles_recombined_app/view_model/common_view_model.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
 import 'package:doubles_recombined_app/view_model/participant_view_model.dart';
@@ -19,6 +20,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider<CommonViewModel>(create: (context) => CommonViewModel()),
         ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider(database: database)),
+        ChangeNotifierProvider<SettingProvider>(create: (context) => SettingProvider(database: database)),
         ChangeNotifierProvider<UserViewModel>(create: (context) => UserViewModel()),
         ChangeNotifierProvider<ParticipantViewModel>(create: (context) => ParticipantViewModel()),
       ],

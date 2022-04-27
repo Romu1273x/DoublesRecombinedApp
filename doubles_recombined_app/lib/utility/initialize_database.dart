@@ -59,6 +59,10 @@ const migrationScripts = {
       gender INTEGER NOT NULL,
       status INTEGER NOT NULL DEFAULT 0
     );
+    CREATE TABLE setting (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      count_court INTEGER NOT NULL DEFAULT 0
+    );
   '''],
   // アップデートする際のメモ
   //'2': ['ALTER TABLE todo ADD COLUMN videoPath TEXT;'],

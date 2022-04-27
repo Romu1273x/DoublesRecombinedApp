@@ -7,7 +7,7 @@ class GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    const int useCourts = 2; // TODO:仮。コート数
+    const int useCourts = 1; // TODO:仮。コート数
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +65,10 @@ class CourtListWidget extends StatelessWidget {
         ],
       );
     } else {
-      return Container(child: Text('試合を開始する'));
+      if (index == 1) {
+        return Container(child: Text('試合を開始する'));
+      }
+      return Container();
     }
   }
 }
