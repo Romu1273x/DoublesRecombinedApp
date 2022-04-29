@@ -30,7 +30,20 @@ class ConfigurationView extends StatelessWidget {
             child: Row(
               children: [
                 Text('コート数'),
-                Text(settingProvider.settingList[0].count_court!.toString())
+                DropdownButton(
+                  value: settingProvider.countCourt,
+                  icon: Icon(Icons.arrow_drop_down),
+                  items: <int>[1,2,3,4,5,6,7,8,9]
+                    .map<DropdownMenuItem<int>>((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    settingProvider.countCourt = value;
+                  },
+                ),
               ],
             )
           ),

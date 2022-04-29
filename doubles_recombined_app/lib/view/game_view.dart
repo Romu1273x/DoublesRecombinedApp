@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
+import 'package:doubles_recombined_app/provider/setting_provider.dart';
 
 class GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    const int useCourts = 1; // TODO:仮。コート数
+    final SettingProvider settingProvider = Provider.of<SettingProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -15,7 +16,7 @@ class GameView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: (){
-              userProvider.getGameUserList(useCourts);
+              userProvider.getGameUserList(settingProvider.countCourt!);
             }, 
             icon: Icon(Icons.add),
           )
@@ -26,7 +27,7 @@ class GameView extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: useCourts,
+            itemCount: settingProvider.countCourt,
             itemBuilder: (BuildContext context, int index) {
               // コート毎の試合中のユーザー
               return CourtListWidget(index + 1, userProvider.gamePlayUserList); 
