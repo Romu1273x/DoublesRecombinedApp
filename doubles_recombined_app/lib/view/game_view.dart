@@ -20,7 +20,7 @@ class GameView extends StatelessWidget {
               settingProvider.getUseCourt(userProvider.participantUserList.length);
               userProvider.getGameUserList(settingProvider.useCourt!);
             }, 
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.play_circle),
           )
         ],
       ),
@@ -58,7 +58,7 @@ class CourtListWidget extends StatelessWidget {
           Container(
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text("No$index"),
+            child: Text("No$index", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Container(
             alignment: Alignment.topCenter,
@@ -68,9 +68,6 @@ class CourtListWidget extends StatelessWidget {
         ],
       );
     } else {
-      if (index == 1) {
-        return Container(child: Text('試合を開始する'));
-      }
       return Container();
     }
   }
@@ -90,7 +87,7 @@ class CourtWidget extends StatelessWidget {
       width: courtWidth,
       height: courtHeigth,
       decoration: BoxDecoration(
-        border: Border.all(width: 1),
+        border: Border.all(width: 1.5),
       ),
       child: Row( // コートの中身
         children: [
@@ -103,7 +100,10 @@ class CourtWidget extends StatelessWidget {
               ],
             ),
           ),
-          VerticalDivider(color: Colors.black,), // 中間線
+          VerticalDivider( // 中間線
+            thickness: 1,
+            color: Colors.black,
+          ),
           Container( // ユーザー2人
             width: courtWidth * 0.465,
             child: Column(
@@ -128,7 +128,12 @@ class PlayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-
+    
+    // 性別によってアイコンを変更
+    Icon personIcon = Icon(Icons.person, color: Colors.blue, size: courtHeigth / 5);
+    if (userProvider.gamePlayUserList[index].gender == 2) {
+      personIcon = Icon(Icons.person, color: Colors.pink, size: courtHeigth / 5);
+    }
     return Card(
       margin: EdgeInsets.only(top: courtHeigth * 0.08, bottom: courtHeigth * 0.03, left: courtWidth * 0.02),
       color: Colors.cyan[50],
@@ -136,9 +141,9 @@ class PlayerWidget extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.only(top:10, bottom: 10),
-            child: Icon(Icons.person, size: courtHeigth / 5),
+            child: personIcon,
           ),
-          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: courtHeigth / 9))
+          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: courtHeigth / 9))
         ],
       )
     );
@@ -160,12 +165,12 @@ class WaitingPlayers extends StatelessWidget {
           Container(
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text('休憩中'),
+            child: Text('休憩中', style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           Container(
             margin: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
             decoration: BoxDecoration(
-              border: Border.all(width: 1),
+              border: Border.all(width: 1.5),
             ),
             child: GridView.count(
               shrinkWrap: true,
@@ -173,14 +178,19 @@ class WaitingPlayers extends StatelessWidget {
               crossAxisCount: 3,
               childAspectRatio: 3,
               children: List.generate(gameStandUserList.length, (index) {
+                // 性別によってアイコンを変更
+                Icon personIcon = Icon(Icons.person, color: Colors.blue);
+                if (gameStandUserList[index].gender == 2) {
+                  personIcon = Icon(Icons.person, color: Colors.pink);
+                }
                 return Card(
                   color: Colors.cyan[50],
                   child: Row(
                     children: [
                       Container(
-                        child: Icon(Icons.person),
+                        child: personIcon,
                       ),
-                      Text(gameStandUserList[index].name!),
+                      Text(gameStandUserList[index].name!, style: TextStyle(fontWeight: FontWeight.bold)),
                     ]
                   )
                 );
@@ -190,7 +200,7 @@ class WaitingPlayers extends StatelessWidget {
         ]
       );
     } else {
-      return Container();
+      return Container(child: Text(''));
     }
   }
 }

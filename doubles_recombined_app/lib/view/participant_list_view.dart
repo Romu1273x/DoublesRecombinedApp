@@ -42,7 +42,7 @@ class ParticipantListView extends StatelessWidget {
                         child: Text(userProvider.participantUserList[index].name_kana!, style: TextStyle(fontSize: size.height/85)),
                       ),
                       Container(
-                        child: Text(userProvider.participantUserList[index].name!, style: TextStyle(fontSize: size.height/45)),
+                        child: Text(userProvider.participantUserList[index].name!, style: TextStyle(fontSize: size.height/45, fontWeight: FontWeight.bold)),
                       ),                   
                     ],
                   ),

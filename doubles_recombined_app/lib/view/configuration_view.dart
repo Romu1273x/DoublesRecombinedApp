@@ -17,7 +17,7 @@ class ConfigurationView extends StatelessWidget {
           Container(
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text('コート設定')
+            child: Text('コート設定', style: TextStyle(fontWeight: FontWeight.bold))
           ),
           Container(
             alignment: Alignment.topCenter,
@@ -29,7 +29,7 @@ class ConfigurationView extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Text('コート数'),
+                Text('コート数 ', style: TextStyle(fontWeight: FontWeight.bold)),
                 DropdownButton(
                   value: settingProvider.countCourt,
                   icon: Icon(Icons.arrow_drop_down),

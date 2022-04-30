@@ -34,7 +34,7 @@ class UserListView extends StatelessWidget {
           return Card(
             color: Colors.cyan[50],
             child: ListTile(
-              title: Text(userProvider.userList[index].name!),
+              title: Text(userProvider.userList[index].name!, style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text(userProvider.userList[index].name_kana!),
               trailing: IconButton(
                 onPressed: () {
