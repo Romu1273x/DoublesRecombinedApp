@@ -16,7 +16,9 @@ class GameView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: (){
-              userProvider.getGameUserList(settingProvider.countCourt!);
+              // 設定されたコート数から使用するコート数と試合・休憩するユーザーを作成
+              settingProvider.getUseCourt(userProvider.participantUserList.length);
+              userProvider.getGameUserList(settingProvider.useCourt!);
             }, 
             icon: Icon(Icons.add),
           )
@@ -27,7 +29,7 @@ class GameView extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: settingProvider.countCourt,
+            itemCount: settingProvider.useCourt,
             itemBuilder: (BuildContext context, int index) {
               // コート毎の試合中のユーザー
               return CourtListWidget(index + 1, userProvider.gamePlayUserList); 
