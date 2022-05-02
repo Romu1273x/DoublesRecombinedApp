@@ -11,6 +11,7 @@ class ParticipantListView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('参加者')
       ),
       body: GridView.count(
@@ -23,7 +24,7 @@ class ParticipantListView extends StatelessWidget {
             personIcon = Icon(Icons.person, color: Colors.pink, size: size.width/12);
           }
           return Card(
-            color: Colors.cyan[50],
+            //color: Colors.cyan[50],
             child: Row(
               children: [
                 Container(
@@ -42,7 +43,7 @@ class ParticipantListView extends StatelessWidget {
                         child: Text(userProvider.participantUserList[index].name_kana!, style: TextStyle(fontSize: size.height/85)),
                       ),
                       Container(
-                        child: Text(userProvider.participantUserList[index].name!, style: TextStyle(fontSize: size.height/45, fontWeight: FontWeight.bold)),
+                        child: Text(userProvider.participantUserList[index].name!, style: TextStyle(fontSize: size.height/45)),
                       ),                   
                     ],
                   ),

@@ -12,6 +12,7 @@ class GameView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('試合'),
         actions: [
           IconButton(
@@ -143,7 +144,7 @@ class PlayerWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top:10, bottom: 10),
             child: personIcon,
           ),
-          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: courtHeigth / 9))
+          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: courtHeigth / 9))
         ],
       )
     );
@@ -190,7 +191,7 @@ class WaitingPlayers extends StatelessWidget {
                       Container(
                         child: personIcon,
                       ),
-                      Text(gameStandUserList[index].name!, style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(gameStandUserList[index].name!),
                     ]
                   )
                 );

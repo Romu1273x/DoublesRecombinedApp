@@ -34,10 +34,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeMode mode = ThemeMode.system;
+
     return MaterialApp(
       debugShowMaterialGrid: false, // レイアウトデバック機能
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue[900],
+        scaffoldBackgroundColor: Colors.blue[100],
       ),
       // ルーティングの設定
       initialRoute: '/home',

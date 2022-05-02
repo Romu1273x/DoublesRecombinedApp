@@ -10,6 +10,7 @@ class ConfigurationView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('設定')
       ),
       body: Column(

@@ -22,30 +22,30 @@ class CommonView extends StatelessWidget {
       body: _pages[model.index], // ページ移動
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: model.index,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.groups), // pepole
             activeIcon: Icon(Icons.groups_outlined),
             label: 'メンバー',
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.emoji_emotions), // view
             activeIcon: Icon(Icons.emoji_emotions_outlined),
             label: '参加者',
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.flag), // sports_tennis, reduce_capacity, repeat, sports
             activeIcon: Icon(Icons.flag_outlined),
             label: '試合',
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             activeIcon: Icon(Icons.settings_outlined),
             label: '設定',
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
         ],
         // ボトムナビゲーションでページ遷移

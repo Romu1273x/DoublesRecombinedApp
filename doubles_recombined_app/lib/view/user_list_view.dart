@@ -12,6 +12,7 @@ class UserListView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('メンバー'),
         actions: [
           IconButton(
@@ -32,9 +33,9 @@ class UserListView extends StatelessWidget {
             personIcon = Icon(Icons.person, size:40, color: Colors.pink);
           }
           return Card(
-            color: Colors.cyan[50],
+            //color: Colors.cyan[50],
             child: ListTile(
-              title: Text(userProvider.userList[index].name!, style: TextStyle(fontWeight: FontWeight.bold)),
+              title: Text(userProvider.userList[index].name!),
               subtitle: Text(userProvider.userList[index].name_kana!),
               trailing: IconButton(
                 onPressed: () {
