@@ -15,6 +15,11 @@ dependencies:
   sqflite: ^2.0.2
   path_provider: ^2.0.9
   shared_preferences: ^2.0.13
+  flutter_native_splash: ^2.1.6
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/splash.png"
 
 
   cupertino_icons: ^1.0.2

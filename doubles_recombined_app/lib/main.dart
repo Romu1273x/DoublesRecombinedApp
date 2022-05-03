@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:doubles_recombined_app/utility/initialize_database.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/provider/setting_provider.dart';
@@ -12,13 +13,14 @@ import 'package:doubles_recombined_app/view/common_view.dart';
 
 void main() async {
   // runApp()を呼び出す前にFlutter Engineの機能を利用したい場合に必要
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final database = await initializeDatabase(); // DBの準備
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   debugPaintSizeEnabled = false; // レイアウトデバック機能
   runApp(
-		MultiProvider( // providerの定義
+    MultiProvider( // providerの定義
       providers: [
         ChangeNotifierProvider<CommonViewModel>(create: (context) => CommonViewModel()),
         ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider(database: database)),
@@ -34,6 +36,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     ThemeMode mode = ThemeMode.system;
 
     return MaterialApp(
