@@ -24,7 +24,6 @@ class ParticipantListView extends StatelessWidget {
             personIcon = Icon(Icons.person, color: Colors.pink, size: size.width/12);
           }
           return Card(
-            //color: Colors.cyan[50],
             child: Row(
               children: [
                 Container(
@@ -55,18 +54,23 @@ class ParticipantListView extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return SimpleDialog(
-                            children: <Widget>[
-                              SimpleDialogOption(
+                          return AlertDialog(
+                            content: Text('参加者リストから削除しますか？'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('キャンセル'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                child: Text('OK'),
                                 onPressed: () {
                                   // 参加状態から不参加にする
                                   userProvider.participantUserList[index].status = 0;
                                   userProvider.updateUser(userProvider.participantUserList[index]);
                                   Navigator.of(context).pop();
                                 },
-                                child: const Center(
-                                  child: Text('参加者リストから削除しますか？'),
-                                ),
                               ),
                             ],
                           );

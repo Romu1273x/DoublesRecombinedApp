@@ -17,8 +17,8 @@ class ConfigurationView extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.topLeft,
-            margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text('コート設定', style: TextStyle(fontWeight: FontWeight.bold))
+            margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.065),
+            child: Text('コート設定', style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold))
           ),
           Container(
             alignment: Alignment.topCenter,
@@ -27,10 +27,14 @@ class ConfigurationView extends StatelessWidget {
             width: size.width * 0.87,
             decoration: BoxDecoration(
               border: Border.all(width: 1),
+              color: Colors.white,
             ),
             child: Row(
               children: [
-                Text('コート数 ', style: TextStyle(fontWeight: FontWeight.bold)),
+                Container(
+                  margin: EdgeInsets.only(left: size.width * 0.01, right: size.width * 0.05),
+                  child: Text('コート数：', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
                 DropdownButton(
                   value: settingProvider.countCourt,
                   icon: Icon(Icons.arrow_drop_down),

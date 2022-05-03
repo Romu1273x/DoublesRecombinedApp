@@ -8,6 +8,7 @@ class UserListView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
@@ -24,58 +25,60 @@ class UserListView extends StatelessWidget {
           )
         ],
       ),
-      body: ListView.builder(
-        itemCount: userProvider.userList.length,
-        itemBuilder: (BuildContext context, int index) {
+      body: GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 2.6,
+        children: List.generate(userProvider.userList.length, (index) {
           // 性別によってアイコンを変更
-          Icon personIcon = Icon(Icons.person, size:40, color: Colors.blue);
+          Icon personIcon = Icon(Icons.person, color: Colors.blue, size: size.width/12);
           if (userProvider.userList[index].gender == 2) {
-            personIcon = Icon(Icons.person, size:40, color: Colors.pink);
+            personIcon = Icon(Icons.person, color: Colors.pink, size: size.width/12);
           }
           return Card(
-            //color: Colors.cyan[50],
-            child: ListTile(
-              title: Text(userProvider.userList[index].name!),
-              subtitle: Text(userProvider.userList[index].name_kana!),
-              trailing: IconButton(
-                onPressed: () {
-                  // ユーザー削除ダイアログを表示
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        children: <Widget>[
-                          SimpleDialogOption(
-                            onPressed: () {
-                              // ユーザーをリストから削除
-                              userProvider.deleteUser(userProvider.userList[index].id!);
-                              Navigator.of(context).pop();
-                            },
-                            child: const Center(
-                              child: Text('削除'),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                icon: Icon(Icons.more_vert),
-              ),
-              leading: personIcon,
-              onTap: () {
-                // ユーザー編集ダイアログを表示
-                InputUserDialog(context, userProvider.userList[index]);
-              },
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  child: personIcon,
+                ),
+                Container(
+                  width: (size.width / 4.2),
+                  padding: const EdgeInsets.all(5.0),
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(userProvider.userList[index].name_kana!, style: TextStyle(fontSize: size.height/85)),
+                      ),
+                      Container(
+                        child: Text(userProvider.userList[index].name!, style: TextStyle(fontSize: size.height/45)),
+                      ),                   
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () {
+                      // ユーザー編集ダイアログを表示
+                      InputUserDialog(context, userProvider.userList[index]);
+                    }, 
+                    icon: Icon(Icons.more_vert),
+                  ),
+                ),
+              ],
             ),
           );
-        },
+        })
       ),
     );
   }
 
   // ユーザー情報入力ダイアログ（ユーザー追加、ユーザー編集）
   Future<void> InputUserDialog(BuildContext context, User? user) async {
+    final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
     final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     final UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
     
@@ -98,107 +101,140 @@ class UserListView extends StatelessWidget {
       builder: (context) {
         return Consumer<UserViewModel>(
           builder: (context, userModel, _) {
-            return AlertDialog(
-              title: Text(_title),
-              // 入力フォーム
-              content: Container(
-                height: 300,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      initialValue: userModel.user.name,
-                      decoration: InputDecoration(
-                        labelText: '名前',
-                        hintText: '(例)山田太郎',
-                      ),
-                      onChanged: (value){
-                        userModel.user.name = value;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: userModel.user.name_kana,
-                      decoration: InputDecoration(
-                        labelText: 'なまえ',
-                        hintText: '(例)やまだたろう',
-                      ),
-                      onChanged: (value){
-                        userModel.user.name_kana = value;
-                      },
-                    ),
-                    // 性別はラジオボタン
-                    Container(
-                      padding: EdgeInsets.only(top: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('性別'),
-                          Row(
-                            children: <Widget>[
-                              Radio(
-                                activeColor: Colors.blueAccent,
-                                value: '男性',
-                                groupValue: userModel.sexValue,
-                                onChanged: (value){
-                                  userModel.sexValue = '男性';
-                                  userModel.user.gender = 1;
-                                },
+            return Stack(
+              children: <Widget>[
+                AlertDialog(
+                  title: Text(_title),
+                  // 入力フォーム
+                  content: Container(
+                    height: size.height * 0.45,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          initialValue: userModel.user.name,
+                          decoration: InputDecoration(
+                            labelText: '名前',
+                            hintText: '(例)山田太郎',
+                          ),
+                          onChanged: (value){
+                            userModel.user.name = value;
+                          },
+                        ),
+                        TextFormField(
+                          initialValue: userModel.user.name_kana,
+                          decoration: InputDecoration(
+                            labelText: 'なまえ',
+                            hintText: '(例)やまだたろう',
+                          ),
+                          onChanged: (value){
+                            userModel.user.name_kana = value;
+                          },
+                        ),
+                        // 性別はラジオボタン
+                        Container(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('性別'),
+                              Row(
+                                children: <Widget>[
+                                  Radio(
+                                    activeColor: Colors.blueAccent,
+                                    value: '男性',
+                                    groupValue: userModel.sexValue,
+                                    onChanged: (value){
+                                      userModel.sexValue = '男性';
+                                      userModel.user.gender = 1;
+                                    },
+                                  ),
+                                  Text('男性'),
+                                  Radio(
+                                    activeColor: Colors.blueAccent,
+                                    value: '女性',
+                                    groupValue: userModel.sexValue,
+                                    onChanged: (value){
+                                      userModel.sexValue = '女性';
+                                      userModel.user.gender = 2;
+                                    },
+                                  ),
+                                  Text('女性'),
+                                ],
                               ),
-                              Text('男性'),
-                              Radio(
-                                activeColor: Colors.blueAccent,
-                                value: '女性',
-                                groupValue: userModel.sexValue,
-                                onChanged: (value){
-                                  userModel.sexValue = '女性';
-                                  userModel.user.gender = 2;
-                                },
-                              ),
-                              Text('女性'),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        // 参加はトグル
+                        SwitchListTile(
+                          title: Text('参加'),
+                          value: userModel.participantFlag,
+                          onChanged: (value){
+                            if (value) {
+                              userModel.participantFlag = true;
+                              userModel.user.status = 1; 
+                            } else {
+                              userModel.participantFlag = false;
+                              userModel.user.status = 0; 
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    // 参加はトグル
-                    SwitchListTile(
-                      title: Text('参加'),
-                      value: userModel.participantFlag,
-                      onChanged: (value){
-                        if (value) {
-                          userModel.participantFlag = true;
-                          userModel.user.status = 1; 
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('キャンセル'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        if (_inputStatus == 'ADD') {
+                          // ユーザーをリストを追加
+                          userProvider.addUser(userModel.user);
                         } else {
-                          userModel.participantFlag = false;
-                          userModel.user.status = 0; 
+                          // ユーザーをリストを編集
+                          userProvider.updateUser(userModel.user);
                         }
+                        Navigator.pop(context);
                       },
                     ),
                   ],
                 ),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  color: Colors.white,
-                  textColor: Colors.blue,
-                  child: Text('キャンセル'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                FlatButton(
-                  color: Colors.white,
-                  textColor: Colors.blue,
-                  child: Text('OK'),
-                  onPressed: () {
-                    if (_inputStatus == 'ADD') {
-                      // ユーザーをリストを追加
-                      userProvider.addUser(userModel.user);
-                    } else {
-                      // ユーザーをリストを編集
-                      userProvider.updateUser(userModel.user);
+                Align(
+                  alignment: Alignment(0.53, -0.615),
+                  child: GestureDetector(
+                    child: Icon(Icons.delete),
+                    onTap:() {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text('ユーザーを削除しますか？'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('キャンセル'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  // ユーザーをリストを削除
+                                  userProvider.deleteUser(userModel.user.id!);
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
-                    Navigator.pop(context);
-                  },
+                  ),
                 ),
               ],
             );

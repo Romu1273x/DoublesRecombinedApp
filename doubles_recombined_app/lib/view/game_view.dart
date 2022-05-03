@@ -57,9 +57,9 @@ class CourtListWidget extends StatelessWidget {
       return Column(
         children: [
           Container(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text("No$index", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text("コート$index", style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold)),
           ),
           Container(
             alignment: Alignment.topCenter,
@@ -88,6 +88,7 @@ class CourtWidget extends StatelessWidget {
       width: courtWidth,
       height: courtHeigth,
       decoration: BoxDecoration(
+        color: Colors.green[300],
         border: Border.all(width: 1.5),
       ),
       child: Row( // コートの中身
@@ -137,7 +138,6 @@ class PlayerWidget extends StatelessWidget {
     }
     return Card(
       margin: EdgeInsets.only(top: courtHeigth * 0.08, bottom: courtHeigth * 0.03, left: courtWidth * 0.02),
-      color: Colors.cyan[50],
       child: Row(
         children: [
           Container(
@@ -161,44 +161,46 @@ class WaitingPlayers extends StatelessWidget {
     final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
 
     if (gameStandUserList.length != 0) {
-      return Column(
-        children: [
-          Container(
-            alignment: Alignment.topLeft,
-            margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text('休憩中', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
-            decoration: BoxDecoration(
-              border: Border.all(width: 1.5),
+      return Container(
+        margin: EdgeInsets.only(top:size.height * 0.05, left: size.width * 0.05, right: size.width * 0.05),
+        decoration: BoxDecoration(
+          color: Colors.lime[200],
+          border: Border.all(width: 1.5),
+        ),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              margin: EdgeInsets.only(top: size.height * 0.005, left: size.width * 0.01),
+              child: Text("おやすみ：${gameStandUserList.length}名", style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold)),
             ),
-            child: GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
-              childAspectRatio: 3,
-              children: List.generate(gameStandUserList.length, (index) {
-                // 性別によってアイコンを変更
-                Icon personIcon = Icon(Icons.person, color: Colors.blue);
-                if (gameStandUserList[index].gender == 2) {
-                  personIcon = Icon(Icons.person, color: Colors.pink);
-                }
-                return Card(
-                  color: Colors.cyan[50],
-                  child: Row(
-                    children: [
-                      Container(
-                        child: personIcon,
-                      ),
-                      Text(gameStandUserList[index].name!),
-                    ]
-                  )
-                );
-              })
+            Container(
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                childAspectRatio: 3,
+                children: List.generate(gameStandUserList.length, (index) {
+                  // 性別によってアイコンを変更
+                  Icon personIcon = Icon(Icons.person, color: Colors.blue);
+                  if (gameStandUserList[index].gender == 2) {
+                    personIcon = Icon(Icons.person, color: Colors.pink);
+                  }
+                  return Card(
+                    child: Row(
+                      children: [
+                        Container(
+                          child: personIcon,
+                        ),
+                        Text(gameStandUserList[index].name!),
+                      ]
+                    )
+                  );
+                })
+              ),
             ),
-          ),
-        ]
+          ]
+        )
       );
     } else {
       return Container(child: Text(''));
