@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:doubles_recombined_app/utility/initialize_database.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/provider/setting_provider.dart';
+import 'package:doubles_recombined_app/provider/theme_provider.dart';
 import 'package:doubles_recombined_app/view_model/common_view_model.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
 import 'package:doubles_recombined_app/view_model/participant_view_model.dart';
@@ -25,6 +26,7 @@ void main() async {
         ChangeNotifierProvider<CommonViewModel>(create: (context) => CommonViewModel()),
         ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider(database: database)),
         ChangeNotifierProvider<SettingProvider>(create: (context) => SettingProvider(prefs: prefs)),
+        ChangeNotifierProvider<ThemeProvider>(create: (context) => ThemeProvider(prefs: prefs)),
         ChangeNotifierProvider<UserViewModel>(create: (context) => UserViewModel()),
         ChangeNotifierProvider<ParticipantViewModel>(create: (context) => ParticipantViewModel()),
       ],
@@ -36,8 +38,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     FlutterNativeSplash.remove();
-    ThemeMode mode = ThemeMode.system;
 
     return MaterialApp(
       debugShowMaterialGrid: false, // レイアウトデバック機能
@@ -45,6 +47,11 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue[900],
         scaffoldBackgroundColor: Colors.blue[100],
       ),
+      darkTheme: ThemeData(
+        primaryColor: Colors.black,
+        scaffoldBackgroundColor: Colors.grey,
+      ),
+      themeMode: themeProvider.themeMode,
       // ルーティングの設定
       initialRoute: '/home',
       routes: {
