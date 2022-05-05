@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:doubles_recombined_app/utility/initialize_database.dart';
@@ -16,6 +17,7 @@ void main() async {
   // runApp()を呼び出す前にFlutter Engineの機能を利用したい場合に必要
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  MobileAds.instance.initialize(); // Admodの初期化
   final database = await initializeDatabase(); // DBの準備
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
