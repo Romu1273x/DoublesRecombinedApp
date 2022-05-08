@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:provider/provider.dart';
+import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
+import 'package:doubles_recombined_app/widgets/gender_person_icon.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
 
 class UserListView extends StatelessWidget {
@@ -29,17 +30,12 @@ class UserListView extends StatelessWidget {
         crossAxisCount: 2,
         childAspectRatio: 2.6,
         children: List.generate(userProvider.userList.length, (index) {
-          // 性別によってアイコンを変更
-          Icon personIcon = Icon(Icons.person, color: Colors.blue, size: size.width/12);
-          if (userProvider.userList[index].gender == 2) {
-            personIcon = Icon(Icons.person, color: Colors.pink, size: size.width/12);
-          }
           return Card(
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(5.0),
-                  child: personIcon,
+                  child: GenderPersonIcon(gender: userProvider.userList[index].gender!, size: size.width/12),
                 ),
                 Container(
                   width: (size.width / 4.2),

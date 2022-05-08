@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/provider/setting_provider.dart';
+import 'package:doubles_recombined_app/widgets/gender_person_icon.dart';
 
 class GameView extends StatelessWidget {
   @override
@@ -131,18 +132,13 @@ class PlayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     
-    // 性別によってアイコンを変更
-    Icon personIcon = Icon(Icons.person, color: Colors.blue, size: courtHeigth / 5);
-    if (userProvider.gamePlayUserList[index].gender == 2) {
-      personIcon = Icon(Icons.person, color: Colors.pink, size: courtHeigth / 5);
-    }
     return Card(
       margin: EdgeInsets.only(top: courtHeigth * 0.08, bottom: courtHeigth * 0.03, left: courtWidth * 0.02),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.only(top:10, bottom: 10),
-            child: personIcon,
+            child: GenderPersonIcon(gender: userProvider.gamePlayUserList[index].gender!, size: courtHeigth / 5),
           ),
           Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: courtHeigth / 9))
         ],
@@ -181,17 +177,10 @@ class WaitingPlayers extends StatelessWidget {
                 crossAxisCount: 3,
                 childAspectRatio: 3,
                 children: List.generate(gameStandUserList.length, (index) {
-                  // 性別によってアイコンを変更
-                  Icon personIcon = Icon(Icons.person, color: Colors.blue);
-                  if (gameStandUserList[index].gender == 2) {
-                    personIcon = Icon(Icons.person, color: Colors.pink);
-                  }
                   return Card(
                     child: Row(
                       children: [
-                        Container(
-                          child: personIcon,
-                        ),
+                        GenderPersonIcon(gender: gameStandUserList[index].gender!, size: null),
                         Text(gameStandUserList[index].name!),
                       ]
                     )

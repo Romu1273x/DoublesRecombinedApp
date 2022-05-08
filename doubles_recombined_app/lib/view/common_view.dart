@@ -50,7 +50,6 @@ class CommonView extends StatelessWidget {
         ],
         // ボトムナビゲーションでページ遷移
         onTap: (index) {
-          print(index); // TODO:消す。デバック用
           model.index = index; // ここでcurrentIndexを更新
         }
       )
