@@ -5,15 +5,18 @@ class UserViewModel extends ChangeNotifier {
   late User _user;
   String _sexValue = '未選択';
   bool _participantFlag = false;
+  String _inputStatus = 'ADD';
+  String _title = '新規メンバー登録';
 
   // constructor
-  UserViewModel() {
-}
+  UserViewModel() {}
 
   // getter
   User get user => _user;
   String get sexValue => _sexValue;
   bool get participantFlag => _participantFlag;
+  String get inputStatus => _inputStatus;
+  String get title => _title;
 
   // setter
   set user(User inputUser) {
@@ -31,26 +34,40 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ユーザー情報入力ダイアログの初期値の設定
-  void initUser() {
-    // 新規ユーザー登録の場合
-    _sexValue = '未選択';
-    _participantFlag = false;
+  set inputStatus(String inputStatusValue) {
+    _inputStatus = inputStatusValue;
+    notifyListeners();
+  }
 
-    // ユーザー編集の場合
-    if (_user.name != null) {
-      if (_user.gender == 1) {
+  set title(String inputTitleValue) {
+    _title = inputTitleValue;
+    notifyListeners();
+  }
+
+  // ユーザー情報入力ダイアログの初期値の設定
+  void init(User? user) {
+    if (user == null) {
+      // 新規ユーザー登録の場合
+      _user = User(status: 0);
+      _sexValue = '未選択';
+      _participantFlag = false;
+      _inputStatus = 'ADD';
+      _title = '新規メンバー登録';
+    } else {
+      // ユーザー編集の場合
+      _user = user;
+      _inputStatus = 'EDT';
+      _title = 'メンバー情報変更';
+      if (user.gender == 1) {
         _sexValue = '男性';
       } else {
         _sexValue = '女性';
       }
-
-      if (_user.status == null || _user.status == 0) {
+      if (user.status == null || user.status == 0) {
         _participantFlag = false;
       } else {
         _participantFlag = true;
       }
     }
   }
-
 }

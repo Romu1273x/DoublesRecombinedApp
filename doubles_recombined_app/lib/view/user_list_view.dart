@@ -78,18 +78,7 @@ class UserListView extends StatelessWidget {
     final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     final UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
     
-    // ユーザー追加の場合の初期値を設定
-    String _inputStatus = 'ADD'; // 入力フォームの設定
-    String _title = '新規メンバー登録'; // タイトル
-    userModel.user = User(status: 0);
-
-    // ユーザー編集の場合の初期値を設定
-    if (user != null) {
-      _inputStatus = 'EDT';
-      _title = 'メンバー情報変更';
-      userModel.user = user;
-    }
-    userModel.initUser(); // ラジオボタンとトグルの設定
+    userModel.init(user); // ラジオボタンとトグルの設定
 
     // ダイアログの表示
     return showDialog(
@@ -100,7 +89,7 @@ class UserListView extends StatelessWidget {
             return Stack(
               children: <Widget>[
                 AlertDialog(
-                  title: Text(_title),
+                  title: Text(userModel.title),
                   // 入力フォーム
                   content: Container(
                     height: size.height * 0.45,
@@ -108,7 +97,7 @@ class UserListView extends StatelessWidget {
                       children: [
                         TextFormField(
                           initialValue: userModel.user.name,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: '名前',
                             hintText: '(例)山田太郎',
                           ),
@@ -118,7 +107,7 @@ class UserListView extends StatelessWidget {
                         ),
                         TextFormField(
                           initialValue: userModel.user.name_kana,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'なまえ',
                             hintText: '(例)やまだたろう',
                           ),
@@ -128,11 +117,11 @@ class UserListView extends StatelessWidget {
                         ),
                         // 性別はラジオボタン
                         Container(
-                          padding: EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('性別'),
+                              const Text('性別'),
                               Row(
                                 children: <Widget>[
                                   Radio(
@@ -144,7 +133,7 @@ class UserListView extends StatelessWidget {
                                       userModel.user.gender = 1;
                                     },
                                   ),
-                                  Text('男性'),
+                                  const Text('男性'),
                                   Radio(
                                     activeColor: Colors.blueAccent,
                                     value: '女性',
@@ -154,7 +143,7 @@ class UserListView extends StatelessWidget {
                                       userModel.user.gender = 2;
                                     },
                                   ),
-                                  Text('女性'),
+                                  const Text('女性'),
                                 ],
                               ),
                             ],
@@ -162,7 +151,7 @@ class UserListView extends StatelessWidget {
                         ),
                         // 参加はトグル
                         SwitchListTile(
-                          title: Text('参加'),
+                          title: const Text('参加'),
                           value: userModel.participantFlag,
                           onChanged: (value){
                             if (value) {
@@ -179,15 +168,15 @@ class UserListView extends StatelessWidget {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('キャンセル'),
+                      child: const Text('キャンセル'),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
                     TextButton(
-                      child: Text('OK'),
+                      child: const Text('OK'),
                       onPressed: () {
-                        if (_inputStatus == 'ADD') {
+                        if (userModel.inputStatus == 'ADD') {
                           // ユーザーをリストを追加
                           userProvider.addUser(userModel.user);
                         } else {
@@ -200,35 +189,14 @@ class UserListView extends StatelessWidget {
                   ],
                 ),
                 Align(
-                  alignment: Alignment(0.53, -0.615),
+                  alignment: const Alignment(0.53, -0.615),
                   child: GestureDetector(
-                    child: Icon(Icons.delete),
+                    child: const Icon(Icons.delete),
                     onTap:() {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Text('ユーザーを削除しますか？'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text('キャンセル'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              TextButton(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  // ユーザーをリストを削除
-                                  userProvider.deleteUser(userModel.user.id!);
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      if (userModel.inputStatus == 'EDT') {
+                        // ユーザーをリストを削除
+                        DeleteUserDialog(context, userModel.user.id!);
+                      }
                     }
                   ),
                 ),
@@ -240,4 +208,34 @@ class UserListView extends StatelessWidget {
     );
   }
 
+  // ユーザーを削除
+  Future<void> DeleteUserDialog(BuildContext context, int userId) async {
+    final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: const Text('ユーザーを削除しますか？'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('キャンセル'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                // ユーザーをリストを削除
+                userProvider.deleteUser(userId);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
