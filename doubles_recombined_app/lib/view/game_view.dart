@@ -14,7 +14,7 @@ class GameView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('試合'),
+        title: const Text('試合'),
         actions: [
           IconButton(
             onPressed: (){
@@ -22,7 +22,7 @@ class GameView extends StatelessWidget {
               settingProvider.getUseCourt(userProvider.participantUserList.length);
               userProvider.getGameUserList(settingProvider.useCourt!);
             }, 
-            icon: Icon(Icons.play_circle),
+            icon: const Icon(Icons.play_circle),
           )
         ],
       ),
@@ -54,7 +54,7 @@ class CourtListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
 
-    if (gamePlayUserList.length != 0) {
+    if (gamePlayUserList.isNotEmpty) {
       return Column(
         children: [
           Container(
@@ -125,8 +125,8 @@ class CourtWidget extends StatelessWidget {
 class PlayerWidget extends StatelessWidget {
   PlayerWidget(this.index, this.courtWidth, this.courtHeigth);
   int index;
-  var courtWidth;
-  var courtHeigth;
+  double courtWidth;
+  double courtHeigth;
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class WaitingPlayers extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
 
-    if (gameStandUserList.length != 0) {
+    if (gameStandUserList.isNotEmpty) {
       return Container(
         margin: EdgeInsets.only(top:size.height * 0.05, left: size.width * 0.05, right: size.width * 0.05),
         decoration: BoxDecoration(
@@ -170,29 +170,27 @@ class WaitingPlayers extends StatelessWidget {
               margin: EdgeInsets.only(top: size.height * 0.005, left: size.width * 0.01),
               child: Text("おやすみ：${gameStandUserList.length}名", style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold)),
             ),
-            Container(
-              child: GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 3,
-                childAspectRatio: 3,
-                children: List.generate(gameStandUserList.length, (index) {
-                  return Card(
-                    child: Row(
-                      children: [
-                        GenderPersonIcon(gender: gameStandUserList[index].gender!, size: null),
-                        Text(gameStandUserList[index].name!),
-                      ]
-                    )
-                  );
-                })
-              ),
-            ),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 3,
+              childAspectRatio: 3,
+              children: List.generate(gameStandUserList.length, (index) {
+                return Card(
+                  child: Row(
+                    children: [
+                      GenderPersonIcon(gender: gameStandUserList[index].gender!, size: null),
+                      Text(gameStandUserList[index].name!),
+                    ]
+                  )
+                );
+              })
+            ),         
           ]
         )
       );
     } else {
-      return Container(child: Text(''));
+      return Container();
     }
   }
 }

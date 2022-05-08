@@ -15,7 +15,7 @@ class ConfigurationView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('設定')
+        title: const Text('設定')
       ),
       body: Column(
         children: [
@@ -38,11 +38,11 @@ class ConfigurationView extends StatelessWidget {
               children: [
                 Container(
                   margin: EdgeInsets.only(left: size.width * 0.01, right: size.width * 0.05),
-                  child: Text('コート数：', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('コート数：', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 DropdownButton(
                   value: settingProvider.countCourt,
-                  icon: Icon(Icons.arrow_drop_down),
+                  icon: const Icon(Icons.arrow_drop_down),
                   items: <int>[1,2,3,4,5,6,7,8,9]
                     .map<DropdownMenuItem<int>>((int value) {
                     return DropdownMenuItem<int>(
@@ -76,11 +76,11 @@ class ConfigurationView extends StatelessWidget {
               children: [
                 Container(
                   margin: EdgeInsets.only(left: size.width * 0.01, right: size.width * 0.05),
-                  child: Text('表示モード：', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('表示モード：', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 DropdownButton(
                   value: themeProvider.themModeToString(themeProvider.themeMode),
-                  icon: Icon(Icons.arrow_drop_down),
+                  icon: const Icon(Icons.arrow_drop_down),
                   items: <String>['システムモード', 'ライトモード', 'ダークモード']
                     .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
