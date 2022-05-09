@@ -25,20 +25,6 @@ class UserProvider with ChangeNotifier {
     participantUserList = userList.where((User user) => user.status != 0).toList();
   }
 
-  // ユーザーリストの取得
-  Future<List<User>> getUserList() async {
-    final List<Map<String, dynamic>> maps = await database.query('users');
-    return List.generate(maps.length, (i) {
-      return User(
-        id: maps[i]['id'],
-        name: maps[i]['name'],
-        name_kana: maps[i]['name_kana'],
-        gender: maps[i]['gender'],
-        status: maps[i]['status'],
-      );
-    });
-  }
-
   // 参加者リストの更新
   void syncParticipantUserList() {
     participantUserList = userList.where((User user) => user.status != 0).toList();
@@ -62,18 +48,32 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // ユーザーリストの取得
+  Future<List<User>> getUserList() async {
+    final List<Map<String, dynamic>> maps = await database.query('users');
+    return List.generate(maps.length, (i) {
+      return User(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        name_kana: maps[i]['name_kana'],
+        gender: maps[i]['gender'],
+        status: maps[i]['status'],
+      );
+    });
+  }
+
   // Userデータの追加
   Future<void> addUser(User user) async {
-    // userListに追加
-    userList.add(user);
-    syncParticipantUserList();
-
     // データベースに追加
     await database.insert(
       'users',
       user.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    // userListに追加
+    userList = await getUserList(); // IDを取得するためDBから再取得
+    syncParticipantUserList();
     notifyListeners();
   }
 
