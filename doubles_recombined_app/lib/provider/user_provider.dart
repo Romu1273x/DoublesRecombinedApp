@@ -23,6 +23,22 @@ class UserProvider with ChangeNotifier {
   Future<void> initialize() async {
     userList = await getUserList();
     participantUserList = userList.where((User user) => user.status != 0).toList();
+    userListsSortByName();
+  }
+
+  // 名前(ふりがな)順でソート
+  List<User> sortByName(List<User> targetList) {
+    targetList.sort((a, b){ 
+      return a.name_kana!.toLowerCase().compareTo(b.name_kana!.toLowerCase());
+    });
+    return targetList;
+  }
+
+  // ユーザーリストのソート
+  void userListsSortByName() {
+    sortByName(userList);
+    sortByName(participantUserList);
+    notifyListeners();
   }
 
   // 参加者リストの更新
@@ -74,6 +90,7 @@ class UserProvider with ChangeNotifier {
     // userListに追加
     userList = await getUserList(); // IDを取得するためDBから再取得
     syncParticipantUserList();
+    userListsSortByName();
     notifyListeners();
   }
 
@@ -83,6 +100,7 @@ class UserProvider with ChangeNotifier {
     final index = userList.indexWhere((user) => user.id == newUser.id);
     userList[index] = newUser;
     syncParticipantUserList();
+    userListsSortByName();
 
     // データベースを更新
     await database.update(
@@ -100,6 +118,7 @@ class UserProvider with ChangeNotifier {
     final index = userList.indexWhere((user) => user.id == userId);
     userList.removeAt(index);
     syncParticipantUserList();
+    userListsSortByName();
 
     // データベースの削除
     await database.delete(
