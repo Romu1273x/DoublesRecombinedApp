@@ -21,6 +21,10 @@ class CommonView extends StatelessWidget {
     return Scaffold(
       body: _pages[model.index], // ページ移動
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
         currentIndex: model.index,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
