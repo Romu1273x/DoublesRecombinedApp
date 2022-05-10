@@ -4,17 +4,13 @@ import 'package:doubles_recombined_app/model/user_model.dart';
 
 class UserProvider with ChangeNotifier {
   final Database database;
-  late List<User> userList;
-  late List<User> participantUserList;
-  late List<User> gamePlayUserList; // 試合中のユーザーリスト
-  late List<User> gameStandUserList; // 休憩中のユーザーリスト
+  late List<User> userList = [];
+  late List<User> participantUserList = [];
+  late List<User> gamePlayUserList = []; // 試合中のユーザーリスト
+  late List<User> gameStandUserList = []; // 休憩中のユーザーリスト
 
   UserProvider({
     required this.database,
-    this.userList = const [],
-    this.participantUserList = const [],
-    this.gamePlayUserList = const [],
-    this.gameStandUserList = const [],
   }) {
     initialize();
   }
