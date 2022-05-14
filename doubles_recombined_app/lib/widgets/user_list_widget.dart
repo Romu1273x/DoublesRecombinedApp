@@ -25,25 +25,27 @@ class UserListWidget extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(2.0),
             child: GenderPersonIcon(gender: user!.gender!, size: size.width/12),
           ),
           Container(
-            width: (size.width / 4.2),
-            padding: const EdgeInsets.all(5.0),
+            width: (size.width / 3.9),
+            padding: const EdgeInsets.all(1.0),
             alignment: Alignment.centerLeft,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(user!.name_kana!, style: TextStyle(fontSize: size.height/85)),
-                Text(user!.name!, style: TextStyle(fontSize: size.height/45)),                  
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [                
+                Text(user!.name_kana!, style: TextStyle(fontSize: size.width/48)),
+                Container(
+                  child: Text(user!.name!, style: TextStyle(fontSize: size.width/25)),
+                  margin: EdgeInsets.only(bottom: size.height * 0.005),
+                )                 
               ],
             ),
           ),
-          Container(
+          IconButton(
             alignment: Alignment.centerRight,
-            child: IconButton(
               onPressed: () {
                 switch (screen) {
                   case USER_LIST_VIEW: // ユーザーリストの場合
@@ -55,8 +57,7 @@ class UserListWidget extends StatelessWidget {
                   default:
                 }
               }, 
-              icon: const Icon(Icons.more_vert),
-            ),
+            icon: const Icon(Icons.more_vert),
           ),
         ],
       ),
