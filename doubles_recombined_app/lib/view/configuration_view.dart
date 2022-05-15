@@ -23,11 +23,11 @@ class ConfigurationView extends StatelessWidget {
           Container(
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.065),
-            child: Text('コート設定', style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold))
+            child: Text('コート設定', style: TextStyle(fontSize: size.width * 0.048, fontWeight: FontWeight.bold))
           ),
           Container(
             alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01),
+            margin: const EdgeInsets.only(top: 2.0),
             padding: EdgeInsets.all(size.width * 0.01),
             width: size.width * 0.87,
             decoration: BoxDecoration(
@@ -61,11 +61,11 @@ class ConfigurationView extends StatelessWidget {
           Container(
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.065),
-            child: Text('画面設定', style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold))
+            child: Text('画面設定', style: TextStyle(fontSize: size.width * 0.048, fontWeight: FontWeight.bold))
           ),
           Container(
             alignment: Alignment.topCenter,
-            margin: EdgeInsets.only(top: size.height * 0.01),
+            margin: const EdgeInsets.only(top: 2.0),
             padding: EdgeInsets.all(size.width * 0.01),
             width: size.width * 0.87,
             decoration: BoxDecoration(

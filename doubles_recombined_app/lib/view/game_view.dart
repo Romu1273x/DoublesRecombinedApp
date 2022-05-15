@@ -60,7 +60,7 @@ class CourtListWidget extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(top: size.height * 0.02, left: size.width * 0.06),
-            child: Text("コート$index", style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold)),
+            child: Text("コート$index", style: TextStyle(fontSize: size.width * 0.048, fontWeight: FontWeight.bold)),
           ),
           Container(
             alignment: Alignment.topCenter,
@@ -84,7 +84,7 @@ class CourtWidget extends StatelessWidget {
     final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
     final courtWidth = size.width * 0.9;
     final courtHeigth = size.height * 0.2;
-
+    
     return Container( // コート全体
       width: courtWidth,
       height: courtHeigth,
@@ -98,12 +98,19 @@ class CourtWidget extends StatelessWidget {
             width: courtWidth * 0.465,
             child: Column(
               children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 5, top: 5),
+                  child: Text("サーブ", style: TextStyle(fontSize: size.width * 0.044, fontWeight: FontWeight.bold)),
+                ),
+                Expanded(child: Container()),
                 PlayerWidget(0 + (courtNumber - 1) * 4, courtWidth, courtHeigth),
                 PlayerWidget(1 + (courtNumber - 1) * 4, courtWidth, courtHeigth),
+                Expanded(child: Container()),
               ],
             ),
           ),
-          VerticalDivider( // 中間線
+          const VerticalDivider( // 中間線
             thickness: 1,
             color: Colors.black,
           ),
@@ -111,8 +118,15 @@ class CourtWidget extends StatelessWidget {
             width: courtWidth * 0.465,
             child: Column(
               children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.only(left: 5, top: 5),
+                  child: Text("レシーブ", style: TextStyle(fontSize: size.width * 0.044, fontWeight: FontWeight.bold)),
+                ),
+                Expanded(child: Container()),
                 PlayerWidget(2 + (courtNumber - 1) * 4, courtWidth, courtHeigth),
                 PlayerWidget(3 + (courtNumber - 1) * 4, courtWidth, courtHeigth),
+                Expanded(child: Container()),
               ],
             ),
           ),
@@ -132,15 +146,15 @@ class PlayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     
-    return Card(
-      margin: EdgeInsets.only(top: courtHeigth * 0.08, bottom: courtHeigth * 0.03, left: courtWidth * 0.02),
+    return Card(    
+      margin: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 5.0),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.only(top:10, bottom: 10),
-            child: GenderPersonIcon(gender: userProvider.gamePlayUserList[index].gender!, size: courtHeigth / 5),
+            padding: EdgeInsets.only(top: courtHeigth / 25, bottom: courtHeigth / 25),
+            child: GenderPersonIcon(gender: userProvider.gamePlayUserList[index].gender!, size: courtHeigth / 5.5),
           ),
-          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: courtHeigth / 9))
+          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: courtHeigth / 10))
         ],
       )
     );
@@ -159,6 +173,7 @@ class WaitingPlayers extends StatelessWidget {
     if (gameStandUserList.isNotEmpty) {
       return Container(
         margin: EdgeInsets.only(top:size.height * 0.05, left: size.width * 0.05, right: size.width * 0.05),
+        padding: const EdgeInsets.only(top: 2,  bottom: 5),
         decoration: BoxDecoration(
           color: Colors.lime[200],
           border: Border.all(width: 1.5),
@@ -167,8 +182,8 @@ class WaitingPlayers extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: size.height * 0.005, left: size.width * 0.01),
-              child: Text("おやすみ：${gameStandUserList.length}名", style: TextStyle(fontSize: size.height * 0.025, fontWeight: FontWeight.bold)),
+              margin: EdgeInsets.only(left: size.width * 0.01),
+              child: Text("おやすみ：${gameStandUserList.length}名", style: TextStyle(fontSize: size.width * 0.048, fontWeight: FontWeight.bold)),
             ),
             GridView.count(
               shrinkWrap: true,
@@ -177,10 +192,11 @@ class WaitingPlayers extends StatelessWidget {
               childAspectRatio: 3,
               children: List.generate(gameStandUserList.length, (index) {
                 return Card(
+                  margin: const EdgeInsets.all(0.5),
                   child: Row(
                     children: [
-                      GenderPersonIcon(gender: gameStandUserList[index].gender!, size: null),
-                      Text(gameStandUserList[index].name!),
+                      GenderPersonIcon(gender: gameStandUserList[index].gender!, size: size.width/14),
+                      Text(gameStandUserList[index].name!,  style: TextStyle(fontSize: size.height * 0.015)),
                     ]
                   )
                 );
