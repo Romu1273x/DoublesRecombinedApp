@@ -85,7 +85,7 @@ class UserViewModel extends ChangeNotifier {
     }
 
     // ふりがな
-    errorMessage = Validator.NameKanaValidation(user.name);
+    errorMessage = Validator.NameKanaValidation(user.name_kana);
     if (errorMessage != null) {
       errorMessages.add(errorMessage); 
     }
