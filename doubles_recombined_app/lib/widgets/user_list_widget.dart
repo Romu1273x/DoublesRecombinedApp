@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:doubles_recombined_app/utility/validator.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
@@ -99,6 +100,11 @@ class UserListWidget extends StatelessWidget {
                           onChanged: (value){
                             userModel.user.name = value;
                           },
+                          // バリデーション
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            return Validator.NameValidation(value);
+                          },
                         ),
                         TextFormField(
                           initialValue: userModel.user.name_kana,
@@ -108,6 +114,11 @@ class UserListWidget extends StatelessWidget {
                           ),
                           onChanged: (value){
                             userModel.user.name_kana = value;
+                          },
+                          // バリデーション
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            return Validator.NameKanaValidation(value);
                           },
                         ),
                         // 性別はラジオボタン
@@ -171,14 +182,20 @@ class UserListWidget extends StatelessWidget {
                     TextButton(
                       child: const Text('OK'),
                       onPressed: () {
-                        if (userModel.inputStatus == 'ADD') {
-                          // ユーザーをリストを追加
-                          userProvider.addUser(userModel.user);
+                        // バリデーション
+                        if (userModel.validationUser(userModel.user).isEmpty) {
+                          if (userModel.inputStatus == 'ADD') {
+                            // ユーザーをリストを追加
+                            userProvider.addUser(userModel.user);
+                          } else {
+                            // ユーザーをリストを編集
+                            userProvider.updateUser(userModel.user);
+                          }
+                          Navigator.pop(context);
                         } else {
-                          // ユーザーをリストを編集
-                          userProvider.updateUser(userModel.user);
+                          // バリデーションエラー
+                          UserVariationErrorDialog(context, userModel.user);
                         }
-                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -259,6 +276,31 @@ class UserListWidget extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             ),
+          ],
+        );
+      },
+    );
+  }
+
+  // ユーザーのバリデーショエラー
+  static Future<void> UserVariationErrorDialog(BuildContext context, User user) async {
+    final UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(userModel.validationUser(user)),
+          actions: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                child: const Text('閉じる'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            )
           ],
         );
       },

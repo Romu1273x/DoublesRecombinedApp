@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:doubles_recombined_app/utility/validator.dart';
 import 'package:doubles_recombined_app/model/user_model.dart';
 
 class UserViewModel extends ChangeNotifier {
@@ -69,5 +70,41 @@ class UserViewModel extends ChangeNotifier {
         _participantFlag = true;
       }
     }
+  }
+
+  // 入力値のバリデーション
+  String validationUser(User user) {
+    String? errorMessage;
+    List<String> errorMessages = <String>[];
+    String errorString = '';
+
+    // 名前
+    errorMessage = Validator.NameValidation(user.name);
+    if (errorMessage != null) {
+      errorMessages.add(errorMessage); 
+    }
+
+    // ふりがな
+    errorMessage = Validator.NameKanaValidation(user.name);
+    if (errorMessage != null) {
+      errorMessages.add(errorMessage); 
+    }
+
+    // 性別
+    if (user.gender == null) {
+      errorMessages.add('性別を選択してください');
+    } 
+
+    // 参加
+    if (user.status == null) {
+      errorMessages.add('参加可否を選択してください');
+    }
+
+    errorMessages.forEach(
+      (value){
+        errorString = errorString + value + "\n";
+      }
+    );
+    return errorString;
   }
 }
