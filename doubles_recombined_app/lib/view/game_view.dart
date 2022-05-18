@@ -26,20 +26,23 @@ class GameView extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: settingProvider.useCourt,
-            itemBuilder: (BuildContext context, int index) {
-              // コート毎の試合中のユーザー
-              return CourtListWidget(index + 1, userProvider.gamePlayUserList); 
-            }
-          ),
-          WaitingPlayers(userProvider.gameStandUserList), // 休憩中のユーザー
-        ],
-      )
+      body: ListView.builder(
+        shrinkWrap: true,
+        itemCount: settingProvider.useCourt,
+        itemBuilder: (BuildContext context, int index) {
+          // リストの最後は試合中と休憩中のWidgetを表示する
+          if (index + 1 == settingProvider.useCourt) {
+            return Column(
+              children: [
+                CourtListWidget(index + 1, userProvider.gamePlayUserList), // コート毎の試合中のユーザー
+                WaitingPlayers(userProvider.gameStandUserList), // 休憩中のユーザー
+              ]
+            );
+          }
+          // コート毎の試合中のユーザー
+          return CourtListWidget(index + 1, userProvider.gamePlayUserList);
+        }
+      ),
     );
   }
 }
