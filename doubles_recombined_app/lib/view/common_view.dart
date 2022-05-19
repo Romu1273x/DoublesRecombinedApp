@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:doubles_recombined_app/utility/admob_banner.dart';
 import 'package:doubles_recombined_app/view_model/common_view_model.dart';
 import 'package:doubles_recombined_app/view/user_list_view.dart';
 import 'package:doubles_recombined_app/view/participant_list_view.dart';
@@ -19,7 +21,17 @@ class CommonView extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: _pages[model.index], // ページ移動
+      body: Column(
+        children: [
+          Expanded(
+            child: _pages[model.index], // ページ移動
+          ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: AdBanner(AdSize.fullBanner),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).primaryColor,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:doubles_recombined_app/utility/admob_banner.dart';
 import 'package:doubles_recombined_app/provider/setting_provider.dart';
 import 'package:doubles_recombined_app/provider/theme_provider.dart';
 
@@ -94,12 +92,6 @@ class ConfigurationView extends StatelessWidget {
                 ),
               ],
             )
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: AdBanner(AdSize.leaderboard),
-            ),
           ),
         ],
       )
