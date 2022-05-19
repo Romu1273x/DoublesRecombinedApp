@@ -5,8 +5,8 @@ class Validator {
     }
     value = value.trim();
 
-    if (value.length > 12) {
-      return '12文字以下にしてください';
+    if (value.length > 8) {
+      return '8文字以下にしてください';
     }
     return null;
   }

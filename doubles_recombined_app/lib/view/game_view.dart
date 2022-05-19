@@ -59,6 +59,7 @@ class CourtListWidget extends StatelessWidget {
 
     if (gamePlayUserList.isNotEmpty) {
       return Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             alignment: Alignment.centerLeft,
@@ -147,17 +148,18 @@ class PlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // デバイスの画面サイズを取得
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     
     return Card(    
-      margin: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 5.0),
+      margin: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.only(top: courtHeigth / 25, bottom: courtHeigth / 25),
-            child: GenderPersonIcon(gender: userProvider.gamePlayUserList[index].gender!, size: courtHeigth / 5.5),
+            child: GenderPersonIcon(gender: userProvider.gamePlayUserList[index].gender!, size: size.width / 13),
           ),
-          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: courtHeigth / 10))
+          Text(userProvider.gamePlayUserList[index].name!, style: TextStyle(fontSize: size.width / 25))
         ],
       )
     );
@@ -199,7 +201,7 @@ class WaitingPlayers extends StatelessWidget {
                   child: Row(
                     children: [
                       GenderPersonIcon(gender: gameStandUserList[index].gender!, size: size.width/14),
-                      Text(gameStandUserList[index].name!,  style: TextStyle(fontSize: size.height * 0.015)),
+                      Text(gameStandUserList[index].name!,  style: TextStyle(fontSize: size.width * 0.032)),
                     ]
                   )
                 );

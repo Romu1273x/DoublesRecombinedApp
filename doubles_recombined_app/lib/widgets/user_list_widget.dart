@@ -38,8 +38,8 @@ class UserListWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [                
                 Container(
-                  child: Text(user!.name_kana!, style: TextStyle(fontSize: size.width/48)),
-                  margin: EdgeInsets.only(left: size.height * 0.005),
+                  child: Text(user!.name_kana!, style: TextStyle(fontSize: size.width/50)),
+                  margin: EdgeInsets.only(left: size.height * 0.003),
                 ),
                 Container(
                   child: Text(user!.name!, style: TextStyle(fontSize: size.width/25)),
