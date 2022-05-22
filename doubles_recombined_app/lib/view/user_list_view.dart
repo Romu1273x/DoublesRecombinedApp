@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/widgets/user_list_widget.dart';
+import 'package:doubles_recombined_app/view/user_view.dart';
 
 class UserListView extends StatelessWidget {
   
@@ -17,8 +18,8 @@ class UserListView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: (){
-              // ユーザー追加ダイアログを表示
-              UserListWidget.InputUserDialog(context, null);
+              // ユーザー追加画面を表示
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserView(newUser: null)));
             }, 
             icon: const Icon(Icons.person_add),
           )

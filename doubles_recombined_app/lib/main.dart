@@ -12,6 +12,7 @@ import 'package:doubles_recombined_app/view_model/common_view_model.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
 import 'package:doubles_recombined_app/view_model/participant_view_model.dart';
 import 'package:doubles_recombined_app/view/common_view.dart';
+import 'package:doubles_recombined_app/view/user_view.dart';
 
 void main() async {
   // runApp()を呼び出す前にFlutter Engineの機能を利用したい場合に必要
@@ -57,7 +58,8 @@ class MyApp extends StatelessWidget {
       // ルーティングの設定
       initialRoute: '/home',
       routes: {
-        '/home': (context) => CommonView(), 
+        '/home': (context) => CommonView(),
+        '/user': (context) => UserView(),
       },
     );
   }

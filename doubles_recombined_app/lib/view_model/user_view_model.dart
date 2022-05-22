@@ -10,7 +10,7 @@ class UserViewModel extends ChangeNotifier {
   String _title = '新規メンバー登録';
 
   // constructor
-  UserViewModel() {}
+  UserViewModel();
 
   // getter
   User get user => _user;
