@@ -92,12 +92,6 @@ class UserProvider with ChangeNotifier {
 
   // Userデータの更新
   Future<void> updateUser(User newUser) async {
-    // userListを更新
-    final index = userList.indexWhere((user) => user.id == newUser.id);
-    userList[index] = newUser;
-    syncParticipantUserList();
-    userListsSortByName();
-
     // データベースを更新
     await database.update(
       'users',
@@ -105,6 +99,14 @@ class UserProvider with ChangeNotifier {
       where: 'id = ?',
       whereArgs: [newUser.id],
     );
+
+    // userListを更新
+    userList = await getUserList(); // DBから再取得
+    final index = userList.indexWhere((user) => user.id == newUser.id);
+    userList[index] = newUser;
+    syncParticipantUserList();
+    userListsSortByName();
+
     notifyListeners();
   }
 

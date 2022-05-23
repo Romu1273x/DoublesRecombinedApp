@@ -46,8 +46,8 @@ class UserViewModel extends ChangeNotifier {
   }
 
   // ユーザー情報入力ダイアログの初期値の設定
-  void init(User? user) {
-    if (user == null) {
+  void init(User? newUser) {
+    if (newUser == null) {
       // 新規ユーザー登録の場合
       _user = User(status: 0);
       _sexValue = '未選択';
@@ -56,15 +56,15 @@ class UserViewModel extends ChangeNotifier {
       _title = '新規メンバー登録';
     } else {
       // ユーザー編集の場合
-      _user = user;
+      _user = newUser;
       _inputStatus = 'EDT';
       _title = 'メンバー情報変更';
-      if (user.gender == 1) {
+      if (newUser.gender == 1) {
         _sexValue = '男性';
       } else {
         _sexValue = '女性';
       }
-      if (user.status == null || user.status == 0) {
+      if (newUser.status == null || newUser.status == 0) {
         _participantFlag = false;
       } else {
         _participantFlag = true;

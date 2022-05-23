@@ -5,13 +5,23 @@ import 'package:doubles_recombined_app/model/user_model.dart';
 import 'package:doubles_recombined_app/provider/user_provider.dart';
 import 'package:doubles_recombined_app/view_model/user_view_model.dart';
 
-// TODO
-// 1.ルーティングから引数を持ってくる  OK
-// 2.Providerを適用する
-// →キャンセルor戻るでも変更が保存されてしまう
-
 class UserView extends StatelessWidget {
   UserView({this.newUser});
+  final User? newUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserViewModel>(create: (context) => UserViewModel()),
+      ],
+      child: UserViewBuild(newUser: newUser),
+    );
+  }
+}
+
+class UserViewBuild extends StatelessWidget {
+  UserViewBuild({this.newUser});
   final User? newUser;
 
   @override
