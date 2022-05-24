@@ -8,6 +8,7 @@ class UserViewModel extends ChangeNotifier {
   bool _participantFlag = false;
   String _inputStatus = 'ADD';
   String _title = '新規メンバー登録';
+  bool _firstFlag = false;
 
   // constructor
   UserViewModel();
@@ -47,6 +48,9 @@ class UserViewModel extends ChangeNotifier {
 
   // ユーザー情報入力ダイアログの初期値の設定
   void init(User? newUser) {
+    if (_firstFlag == true) {
+      return;
+    }
     if (newUser == null) {
       // 新規ユーザー登録の場合
       _user = User(status: 0);
@@ -70,6 +74,7 @@ class UserViewModel extends ChangeNotifier {
         _participantFlag = true;
       }
     }
+    _firstFlag = true;
   }
 
   // 入力値のバリデーション
