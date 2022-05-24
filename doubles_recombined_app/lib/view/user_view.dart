@@ -144,7 +144,7 @@ class UserViewBuild extends StatelessWidget {
                     Navigator.pop(context);
                   } else {
                     // バリデーションエラー
-                    UserVariationErrorDialog(context, userModel.user);
+                    userVariationErrorDialog(context, userModel.user);
                   }
                 },
               ),
@@ -155,7 +155,7 @@ class UserViewBuild extends StatelessWidget {
     );
   }
 
-  Future<void> UserVariationErrorDialog(BuildContext context, User user) async {
+  Future<void> userVariationErrorDialog(BuildContext context, User user) async {
     final UserViewModel userModel = Provider.of<UserViewModel>(context, listen: false);
 
     return showDialog(
@@ -189,7 +189,7 @@ class DeleteIcon extends StatelessWidget {
       return IconButton(
         onPressed: (){
           // ユーザーをリストを削除
-          DeleteUserDialog(context, userModel.user.id!);
+          deleteUserDialog(context, userModel.user.id!);
         }, 
         icon: const Icon(Icons.delete)
       );
@@ -198,7 +198,7 @@ class DeleteIcon extends StatelessWidget {
     }
   }
 
-  Future<void> DeleteUserDialog(BuildContext context, int userId) async {
+  Future<void> deleteUserDialog(BuildContext context, int userId) async {
     final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return showDialog(
@@ -218,6 +218,7 @@ class DeleteIcon extends StatelessWidget {
               onPressed: () {
                 // ユーザーをリストを削除
                 userProvider.deleteUser(userId);
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
             ),
