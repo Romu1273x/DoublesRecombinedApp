@@ -40,115 +40,124 @@ class UserViewBuild extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TextFormField(
-            initialValue: userModel.user.name,
-            decoration: const InputDecoration(
-              labelText: '名前',
-              hintText: '(例)山田太郎',
-            ),
-            onChanged: (value){
-              userModel.user.name = value;
-            },
-            // バリデーション
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              return Validator.NameValidation(value);
-            },
-          ),
-          TextFormField(
-            initialValue: userModel.user.name_kana,
-            decoration: const InputDecoration(
-              labelText: 'なまえ',
-              hintText: '(例)やまだたろう',
-            ),
-            onChanged: (value){
-              userModel.user.name_kana = value;
-            },
-            // バリデーション
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              return Validator.NameKanaValidation(value);
-            },
-          ),
-          // 性別はラジオボタン
           Container(
-            padding: const EdgeInsets.only(top: 15),
+            color: Colors.white,
+            margin: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('性別'),
+                TextFormField(
+                  initialValue: userModel.user.name,
+                  decoration: const InputDecoration(
+                    labelText: '名前',
+                    hintText: '(例)山田太郎',
+                  ),
+                  onChanged: (value){
+                    userModel.user.name = value;
+                  },
+                  // バリデーション
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    return Validator.NameValidation(value);
+                  },
+                ),
+                TextFormField(
+                  initialValue: userModel.user.name_kana,
+                  decoration: const InputDecoration(
+                    labelText: 'なまえ',
+                    hintText: '(例)やまだたろう',
+                  ),
+                  onChanged: (value){
+                    userModel.user.name_kana = value;
+                  },
+                  // バリデーション
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    return Validator.NameKanaValidation(value);
+                  },
+                ),
+                // 性別はラジオボタン
+                Container(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('性別'),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                            activeColor: Colors.blueAccent,
+                            value: '男性',
+                            groupValue: userModel.sexValue,
+                            onChanged: (value){
+                              userModel.sexValue = '男性';
+                              userModel.user.gender = 1;
+                            },
+                          ),
+                          const Text('男性'),
+                          Radio(
+                            activeColor: Colors.blueAccent,
+                            value: '女性',
+                            groupValue: userModel.sexValue,
+                            onChanged: (value){
+                              userModel.sexValue = '女性';
+                              userModel.user.gender = 2;
+                            },
+                          ),
+                          const Text('女性'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                // 参加はトグル
+                SwitchListTile(
+                  title: const Text('参加'),
+                  value: userModel.participantFlag,
+                  onChanged: (value){
+                    if (value) {
+                      userModel.participantFlag = true;
+                      userModel.user.status = 1; 
+                    } else {
+                      userModel.participantFlag = false;
+                      userModel.user.status = 0; 
+                    }
+                  },
+                ),
                 Row(
-                  children: <Widget>[
-                    Radio(
-                      activeColor: Colors.blueAccent,
-                      value: '男性',
-                      groupValue: userModel.sexValue,
-                      onChanged: (value){
-                        userModel.sexValue = '男性';
-                        userModel.user.gender = 1;
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Spacer(flex: 8),
+                    ElevatedButton(
+                      child: const Text('キャンセル'),
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                     ),
-                    const Text('男性'),
-                    Radio(
-                      activeColor: Colors.blueAccent,
-                      value: '女性',
-                      groupValue: userModel.sexValue,
-                      onChanged: (value){
-                        userModel.sexValue = '女性';
-                        userModel.user.gender = 2;
+                    Spacer(flex: 1),
+                    ElevatedButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        // バリデーション
+                        if (userModel.validationUser(userModel.user).isEmpty) {
+                          if (userModel.inputStatus == 'ADD') {
+                            // ユーザーをリストを追加
+                            userProvider.addUser(userModel.user);
+                          } else {
+                            // ユーザーをリストを編集
+                            userProvider.updateUser(userModel.user);
+                          }
+                          Navigator.pop(context);
+                        } else {
+                          // バリデーションエラー
+                          userVariationErrorDialog(context, userModel.user);
+                        }
                       },
                     ),
-                    const Text('女性'),
-                  ],
+                  ]
                 ),
               ],
             ),
-          ),
-          // 参加はトグル
-          SwitchListTile(
-            title: const Text('参加'),
-            value: userModel.participantFlag,
-            onChanged: (value){
-              if (value) {
-                userModel.participantFlag = true;
-                userModel.user.status = 1; 
-              } else {
-                userModel.participantFlag = false;
-                userModel.user.status = 0; 
-              }
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Spacer(flex: 8),
-              ElevatedButton(
-                child: const Text('キャンセル'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Spacer(flex: 1),
-              ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  // バリデーション
-                  if (userModel.validationUser(userModel.user).isEmpty) {
-                    if (userModel.inputStatus == 'ADD') {
-                      // ユーザーをリストを追加
-                      userProvider.addUser(userModel.user);
-                    } else {
-                      // ユーザーをリストを編集
-                      userProvider.updateUser(userModel.user);
-                    }
-                    Navigator.pop(context);
-                  } else {
-                    // バリデーションエラー
-                    userVariationErrorDialog(context, userModel.user);
-                  }
-                },
-              ),
-            ]
           ),
         ],
       ),
